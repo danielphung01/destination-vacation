@@ -1,7 +1,7 @@
 Original App Design Project - README Template
 ===
 
-# APP_NAME_HERE
+# Destination Vacation
 
 ## Table of Contents
 1. [Overview](#Overview)
@@ -10,17 +10,17 @@ Original App Design Project - README Template
 2. [Schema](#Schema)
 
 ## Overview
-### Description
-[Description of your app]
+### Destination Vacation is an app that allows a user to search for points of interest and things to do nearby the current location. A user can also search for a specific city and use filters for type of activity. Users can log in to bookmark places for future reference.
+
 
 ### App Evaluation
 [Evaluation of your app across the following attributes]
-- **Category:**
-- **Mobile:**
-- **Story:**
-- **Market:**
-- **Habit:**
-- **Scope:**
+- **Category: Tourism Information**
+- **Mobile: Website is interactive, location search, mobile first experience **
+- **Story: Allows users to search for and save nearby points of interests.*
+- **Market: Anyone that needs to look for things to do near them. Ability to save locations allows users to search places to quickly reference later.**
+- **Habit: Users can look up for points of interest before they make a decision on activities they would like to do and places before visiting. **
+- **Scope: The destination vacation app allows for searching of points of interests near the user. Can also save locations and search for locations within other cities. **
 
 ## Product Spec
 
@@ -28,39 +28,52 @@ Original App Design Project - README Template
 
 **Required Must-have Stories**
 
-* [fill in your required user stories here]
-* ...
+* User can create an account using a username and a password
+* User can login to their account using their username and password
+* TODO User can do something with their account
+   *  Pin attractions and save their favorite attractions
+*  User can enter a location by name and define a radius of places nearby, and app takes user query to find attractions within that radius
+*  User can filter results with the following categories: “Food”, “Things to do”, and “Scenery”
+
 
 **Optional Nice-to-have Stories**
+* User can view a map showing locations of attractions
+* Social interaction
+   * Users can post pictures or reviews of locations
+   * Users can look at other users’ saved locations
 
-* [fill in your required user stories here]
-* ...
 
 ### 2. Screen Archetypes
 
-* [list first screen here]
-   * [list associated required story here]
-   * ...
-* [list second screen here]
-   * [list associated required story here]
-   * ...
+* Login Screen
+   * User can login using their username and password
+* Sign Up screen 
+   * User can create an account using a username and a password
+* Search Screen
+   * User can search for places nearby 
+   * User can use search bar to look for destinations 
+* Info Screen
+   * User can view different options available to do at destination 
+   * User can pick between “Food”, “Things to do”, and “Scenery” 
 
 ### 3. Navigation
 
+
 **Tab Navigation** (Tab to Screen)
 
-* [fill out your first tab]
-* [fill out your second tab]
-* [fill out your third tab]
+* Search Screen
+* Information Page 
+* Profile 
 
 **Flow Navigation** (Screen to Screen)
 
-* [list first screen here]
-   * [list screen navigation here]
-   * ...
-* [list second screen here]
-   * [list screen navigation here]
-   * ...
+* Login Screen
+   * Search Screen
+* Sign Up Screen
+   * Search Screen 
+* Search Screen 
+   * Info Screen 
+
 
 ## Wireframes
 [Add picture of your hand sketched wireframes in this section]
@@ -78,3 +91,4 @@ Original App Design Project - README Template
 - [Add list of network requests by screen ]
 - [Create basic snippets for each Parse network request]
 - [OPTIONAL: List endpoints if using existing API such as Yelp]
+
