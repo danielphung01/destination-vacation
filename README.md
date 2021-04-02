@@ -16,11 +16,11 @@ Original App Design Project - README Template
 ### App Evaluation
 [Evaluation of your app across the following attributes]
 - **Category: Tourism Information**
-- **Mobile: Website is interactive, location search, mobile first experience **
-- **Story: Allows users to search for and save nearby points of interests.*
+- **Mobile: Website is interactive, location search, mobile first experience.**
+- **Story: Allows users to search for and save nearby points of interests.**
 - **Market: Anyone that needs to look for things to do near them. Ability to save locations allows users to search places to quickly reference later.**
-- **Habit: Users can look up for points of interest before they make a decision on activities they would like to do and places before visiting. **
-- **Scope: The destination vacation app allows for searching of points of interests near the user. Can also save locations and search for locations within other cities. **
+- **Habit: Users can look up for points of interest before they make a decision on activities they would like to do and places before visiting.**
+- **Scope: The destination vacation app allows for searching of points of interests near the user. Can also save locations and search for locations within other cities.**
 
 ## Product Spec
 
