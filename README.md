@@ -2,22 +2,22 @@
 
 ## Table of Contents
 1. [Overview](#Overview)
-1. [Product Spec](#Product-Spec)
-1. [Wireframes](#Wireframes)
-2. [Schema](#Schema)
+2. [Product Spec](#Product-Spec)
+3. [Wireframes](#Wireframes)
+4. [Schema](#Schema)
 
 ## Overview
-### Destination Vacation is an app that allows a user to search for points of interest and things to do nearby the current location. A user can also search for a specific city and use filters for type of activity. Users can log in to bookmark places for future reference.
+### Destination Vacation is an app that allows a user to search for points of interest and things to do nearby the current location. A user can also search for a specific city and use filters for types of activities. Users can log in to bookmark places for future reference.
 
 
 ### App Evaluation
 [Evaluation of your app across the following attributes]
 - **Category: Tourism Information**
-- **Mobile: Website is interactive, location search, mobile first experience.**
-- **Story: Allows users to search for and save nearby points of interests.**
+- **Mobile: Website is interactive, location services, mobile first experience **
+- **Story: Allows users to search for and save nearby points of interests.*
 - **Market: Anyone that needs to look for things to do near them. Ability to save locations allows users to search places to quickly reference later.**
-- **Habit: Users can look up for points of interest before they make a decision on activities they would like to do and places before visiting.**
-- **Scope: The destination vacation app allows for searching of points of interests near the user. Can also save locations and search for locations within other cities.**
+- **Habit: Users can look up for points of interest before they make a decision on activities they would like to do and places before visiting. **
+- **Scope: The destination vacation app allows for searching of points of interests near the user. Can also save locations and search for locations within other cities. **
 
 ## Product Spec
 
@@ -49,9 +49,10 @@
 * Search Screen
    * User can search for places nearby 
    * User can use search bar to look for destinations 
-* Info Screen
-   * User can view different options available to do at destination 
    * User can pick between “Food”, “Things to do”, and “Scenery” 
+* Info Screen
+   * User can view search results with selected filters
+   * User can view more information on selected locations
 
 ### 3. Navigation
 
@@ -74,18 +75,43 @@
 
 ## Wireframes
 [Add picture of your hand sketched wireframes in this section]
-<img src="https://github.com/danielphung01/destination-vacation/blob/main/wireframes.jpg" width=600>
+<img src="YOUR_WIREFRAME_IMAGE_URL" width=600>
 
 ### [BONUS] Digital Wireframes & Mockups
 
 ### [BONUS] Interactive Prototype
 
-## Schema 
-[This section will be completed in Unit 9]
+## Schema
 ### Models
-[Add table of models]
-### Networking
-- [Add list of network requests by screen ]
-- [Create basic snippets for each Parse network request]
-- [OPTIONAL: List endpoints if using existing API such as Yelp]
+#### Place
 
+   | Property     | Type     | Description                             |
+   | ------------ | -------- | --------------------------------------- |
+   | objectId     | String   | unique id for the place (default field) |
+   | name         | String   | name of place                           |
+   | description  | String   | description of place                    |
+   | address      | String   | address of place                        |
+   | bookmarked   | Boolean  | is location bookmarked by the user      |
+   | image        | String   | link to pictures                        |
+
+### Networking
+#### List of network requests by screen
+   - Info Screen
+      - (Read/GET) Query all nearby locations
+      - (Create/POST) Bookmark/favorite a location
+      - (Delete) Unbookmark/unfavorite a location
+   - Profile Screen
+      - (Read/GET) Query logged in user object
+      - (Read/GET) Query all bookmarked locations
+
+#### Existing API Endpoints
+##### OpenTripMap API
+- Base URL - [https://www.opentripmap.io/product](https://www.opentripmap.io/product)
+
+   HTTP Verb | Endpoint                   | Description
+   --------- | -------------------------- | ------------
+    `GET`    | /{lang}/places/geoname     |  returns the place whose name is most similar to searchstring
+    `GET`    | /{lang}/places/bbox        |  returns all objects in the given boundary box (can be filtered)
+    `GET`    | /{lang}/places/radius      | returns the closest objects to the selected point
+    `GET`    | /{lang}/places/autosuggest | returns suggestions for search term closest to the selected point
+    `GET`    | /{lang}/places/xid/{xid}   | return detailed information about the object
