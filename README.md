@@ -21,6 +21,10 @@
 
 ## Product Spec
 
+Sprint 1 : SET UP API & Parse Set Up 
+- [x] Set up API for Destination Vacation App 
+- [x] Set up Parse within Back4App 
+
 ### 1. User Stories (Required and Optional)
 
 **Required Must-have Stories**
