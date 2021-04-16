@@ -25,12 +25,12 @@
 
 **Required Must-have Stories**
 
-* User can create an account using a username and a password
-* User can login to their account using their username and password
-* TODO User can do something with their account
-   *  Pin attractions and save their favorite attractions
-*  User can enter a location by name and define a radius of places nearby, and app takes user query to find attractions within that radius
-*  User can filter results with the following categories: “Food”, “Things to do”, and “Scenery”
+[ ] User can create an account using a username and a password
+[ ]User can login to their account using their username and password
+[ ]TODO User can do something with their account
+   [ ]  Pin attractions and save their favorite attractions
+[ ] User can enter a location by name and define a radius of places nearby, and app takes user query to find attractions within that radius
+[ ] User can filter results with the following categories: “Food”, “Things to do”, and “Scenery”
 
 
 **Optional Nice-to-have Stories**
