@@ -6,14 +6,18 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.Toast;
 
 import com.codepath.apps.destination_vacation.models.SampleModel;
 import com.codepath.apps.destination_vacation.models.SampleModelDao;
 import com.codepath.asynchttpclient.AsyncHttpClient;
 import com.codepath.asynchttpclient.callback.JsonHttpResponseHandler;
 import com.codepath.oauth.OAuthLoginActionBarActivity;
-
-import org.json.JSONObject;
+import com.parse.LogInCallback;
+import com.parse.ParseException;
+import com.parse.ParseUser;
 
 import okhttp3.Headers;
 
@@ -21,6 +25,10 @@ public class LoginActivity extends OAuthLoginActionBarActivity<RestClient> {
 
 	public static final String URL = "https://api.opentripmap.com/0.1/en/places/bbox?lon_min=38.364285&lat_min=59.855685&lon_max=38.372809&lat_max=59.859052&kinds=interesting_places&format=geojson&apikey=" + BuildConfig.OPENTRIPMAP_API_KEY;
 	public static final String TAG = "LoginActivity";
+	private EditText etUsername;
+	private EditText etPassword;
+	private Button btnLogin;
+	private Button btnSignUp;
 
 	SampleModelDao sampleModelDao;
 	
@@ -28,6 +36,34 @@ public class LoginActivity extends OAuthLoginActionBarActivity<RestClient> {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_login);
+
+		if (ParseUser.getCurrentUser() != null) {
+			goMainActivity();
+		}
+		etUsername = findViewById(R.id.etUsername);
+		etPassword = findViewById(R.id.etPassword);
+		btnLogin = findViewById(R.id.btnLogin);
+		btnSignUp = findViewById(R.id.btnSignUp);
+
+		// Listener for login button
+		btnLogin.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				Log.i(TAG, "onClick login button");
+				String username = etUsername.getText().toString();
+				String password = etPassword.getText().toString();
+				loginUser(username, password);
+			}
+		});
+
+		// Listener for sign up button
+		btnSignUp.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				Log.i(TAG, "onClick signup button");
+				// TODO: code for signing up (new user)
+			}
+		});
 
 		AsyncHttpClient client = new AsyncHttpClient();
 		client.get(URL, new JsonHttpResponseHandler() {
@@ -51,6 +87,23 @@ public class LoginActivity extends OAuthLoginActionBarActivity<RestClient> {
 			@Override
 			public void run() {
 				sampleModelDao.insertModel(sampleModel);
+			}
+		});
+	}
+
+	private void loginUser(String username, String password) {
+		Log.i(TAG, "Attempting to login user " + username);
+		// TODO: navigate to the main activity if the user has signed in properly
+		ParseUser.logInInBackground(username, password, new LogInCallback() {
+			@Override
+			public void done(ParseUser user, ParseException e) {
+				if (e != null) {
+					// TODO: better error handling, maybe have text show "Invalid username or password"
+					Log.e(TAG, "Issue with login", e);
+					return;
+				}
+				goMainActivity();
+				Toast.makeText(LoginActivity.this, "Success", Toast.LENGTH_SHORT).show();
 			}
 		});
 	}
@@ -84,4 +137,9 @@ public class LoginActivity extends OAuthLoginActionBarActivity<RestClient> {
 		getClient().connect();
 	}
 
+	private void goMainActivity() {
+		Intent i = new Intent(this, SearchActivity.class);
+		startActivity(i);
+		finish();
+	}
 }

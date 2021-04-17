@@ -6,6 +6,8 @@ import android.content.Context;
 import androidx.room.Room;
 
 import com.facebook.stetho.Stetho;
+import com.parse.Parse;
+import com.parse.ParseObject;
 
 /*
  * This is the Android application itself and is used to configure various settings
@@ -30,6 +32,16 @@ public class RestApplication extends Application {
 
         // use chrome://inspect to inspect your SQL database
         Stetho.initializeWithDefaults(this);
+
+        // ParseApplication
+        ParseObject.registerSubclass(Destination.class);
+
+        Parse.initialize(new Parse.Configuration.Builder(this)
+                .applicationId(BuildConfig.PARSE_APPLICATION_ID)
+                .clientKey(BuildConfig.PARSE_CLIENT_KEY)
+                .server("https://parseapi.back4app.com")
+                .build()
+        );
     }
 
     public static RestClient getRestClient(Context context) {

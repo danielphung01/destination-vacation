@@ -21,16 +21,24 @@
 
 ## Product Spec
 
+Sprint 1 : SET UP API & Parse Set Up
+- [x] Set up API for Destination Vacation App
+- [x] Set up Parse within Back4App
+
+Sprint 2 : SET UP Login & Sign Up
+- [x] Implement Parse within app
+- [x] Login functionality
+- [ ] Sign Up functionality
+
 ### 1. User Stories (Required and Optional)
 
 **Required Must-have Stories**
 
-* User can create an account using a username and a password
-* User can login to their account using their username and password
-* TODO User can do something with their account
-   *  Pin attractions and save their favorite attractions
-*  User can enter a location by name and define a radius of places nearby, and app takes user query to find attractions within that radius
-*  User can filter results with the following categories: “Food”, “Things to do”, and “Scenery”
+- [ ] User can create an account using a username and a password
+- [ ] User can login to their account using their username and password
+- [ ] User can save their favorite attractions
+- [ ] User can enter a location by name and define a radius of places nearby, and app takes user query to find attractions within that radius
+- [ ] User can filter results with the following categories: “Food”, “Things to do”, and “Scenery”
 
 
 **Optional Nice-to-have Stories**
@@ -44,12 +52,12 @@
 
 * Login Screen
    * User can login using their username and password
-* Sign Up screen 
+* Sign Up screen
    * User can create an account using a username and a password
 * Search Screen
-   * User can search for places nearby 
-   * User can use search bar to look for destinations 
-   * User can pick between “Food”, “Things to do”, and “Scenery” 
+   * User can search for places nearby
+   * User can use search bar to look for destinations
+   * User can pick between “Food”, “Things to do”, and “Scenery”
 * Info Screen
    * User can view search results with selected filters
    * User can view more information on selected locations
@@ -60,17 +68,17 @@
 **Tab Navigation** (Tab to Screen)
 
 * Search Screen
-* Information Page 
-* Profile 
+* Information Page
+* Profile
 
 **Flow Navigation** (Screen to Screen)
 
 * Login Screen
    * Search Screen
 * Sign Up Screen
-   * Search Screen 
-* Search Screen 
-   * Info Screen 
+   * Search Screen
+* Search Screen
+   * Info Screen
 
 
 ## Wireframes
@@ -114,3 +122,7 @@
     `GET`    | /{lang}/places/radius      | returns the closest objects to the selected point
     `GET`    | /{lang}/places/autosuggest | returns suggestions for search term closest to the selected point
     `GET`    | /{lang}/places/xid/{xid}   | return detailed information about the object
+
+## GIF
+### Build Sprint 1
+<img src='walkthrough-build-sprint-1.gif' title='Build Sprint 1' alt='Build Sprint 1'/>
