@@ -19,7 +19,7 @@ import okhttp3.Headers;
 
 public class LoginActivity extends OAuthLoginActionBarActivity<RestClient> {
 
-	public static final String URL = "http://api.opentripmap.com/0.1/en/places/bbox?lon_min=38.364285&lat_min=59.855685&lon_max=38.372809&lat_max=59.859052&kinds=interesting_places&format=geojson&apikey=5ae2e3f221c38a28845f05b63fec109c3dd79adf94345801d2cf0a37";
+	public static final String URL = "https://api.opentripmap.com/0.1/en/places/bbox?lon_min=38.364285&lat_min=59.855685&lon_max=38.372809&lat_max=59.859052&kinds=interesting_places&format=geojson&apikey=" + BuildConfig.OPENTRIPMAP_API_KEY;
 	public static final String TAG = "LoginActivity";
 
 	SampleModelDao sampleModelDao;
