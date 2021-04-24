@@ -59,6 +59,7 @@ public class LoginActivity extends OAuthLoginActionBarActivity<RestClient> {
 				Log.i(TAG, "onClick login button");
 				String username = etUsername.getText().toString();
 				String password = etPassword.getText().toString();
+				// TODO: add email signin functionality (look for '@' to determine if signing in with email or username)
 				loginUser(username, password);
 			}
 		});
@@ -101,7 +102,6 @@ public class LoginActivity extends OAuthLoginActionBarActivity<RestClient> {
 
 	void loginUser(String username, String password) {
 		Log.i(TAG, "Attempting to login user " + username);
-		// TODO: navigate to the main activity if the user has signed in properly
 		ParseUser.logInInBackground(username, password, new LogInCallback() {
 			@Override
 			public void done(ParseUser user, ParseException e) {
