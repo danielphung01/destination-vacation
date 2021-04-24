@@ -62,6 +62,9 @@ public class LoginActivity extends OAuthLoginActionBarActivity<RestClient> {
 			public void onClick(View v) {
 				Log.i(TAG, "onClick signup button");
 				// TODO: code for signing up (new user)
+				Intent intent = new Intent(this, SignUpActivity.class);
+
+				startActivity(intent);
 			}
 		});
 
@@ -91,7 +94,7 @@ public class LoginActivity extends OAuthLoginActionBarActivity<RestClient> {
 		});
 	}
 
-	private void loginUser(String username, String password) {
+	void loginUser(String username, String password) {
 		Log.i(TAG, "Attempting to login user " + username);
 		// TODO: navigate to the main activity if the user has signed in properly
 		ParseUser.logInInBackground(username, password, new LogInCallback() {
