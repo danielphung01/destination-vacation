@@ -126,3 +126,6 @@ Sprint 2 : SET UP Login & Sign Up
 ## GIF
 ### Build Sprint 1
 <img src='walkthrough-build-sprint-1.gif' title='Build Sprint 1' alt='Build Sprint 1'/>
+
+### Build Sprint 2 - Sign Up Screen 
+<img src='DestinationVacation.gif' title='Build Sprint 2' alt='Build Sprint 2'/>
