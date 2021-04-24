@@ -28,7 +28,7 @@ Sprint 1 : SET UP API & Parse Set Up
 Sprint 2 : SET UP Login & Sign Up
 - [x] Implement Parse within app
 - [x] Login functionality
-- [ ] Sign Up functionality
+- [x] Sign Up functionality
 
 ### 1. User Stories (Required and Optional)
 
