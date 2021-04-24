@@ -62,7 +62,7 @@ public class SignUpActivity extends OAuthLoginActionBarActivity<RestClient> {
             @Override
             public void onClick(View v) {
                 Log.i(TAG, "onClick signup button");
-                Intent intent = new Intent(this, LoginActivity.class);
+                Intent intent = new Intent(SignUpActivity.this, LoginActivity.class);
                 startActivity(intent);
             }
         });

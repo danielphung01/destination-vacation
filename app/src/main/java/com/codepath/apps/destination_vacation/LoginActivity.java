@@ -62,7 +62,7 @@ public class LoginActivity extends OAuthLoginActionBarActivity<RestClient> {
 			public void onClick(View v) {
 				Log.i(TAG, "onClick signup button");
 				// TODO: code for signing up (new user)
-				Intent intent = new Intent(this, SignUpActivity.class);
+				Intent intent = new Intent(LoginActivity.this, SignUpActivity.class);
 
 				startActivity(intent);
 			}
