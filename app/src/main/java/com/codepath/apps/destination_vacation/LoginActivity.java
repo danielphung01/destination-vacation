@@ -146,7 +146,7 @@ public class LoginActivity extends OAuthLoginActionBarActivity<RestClient> {
 	}
 
 	private void goMainActivity() {
-		Intent i = new Intent(this, SearchActivity.class);
+		Intent i = new Intent(this, MainActivity.class);
 		startActivity(i);
 		finish();
 	}

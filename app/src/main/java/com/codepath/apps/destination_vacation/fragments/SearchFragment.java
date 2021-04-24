@@ -15,7 +15,6 @@ import android.widget.Toast;
 
 import com.codepath.apps.destination_vacation.LoginActivity;
 import com.codepath.apps.destination_vacation.R;
-import com.codepath.apps.destination_vacation.SearchActivity;
 import com.parse.ParseUser;
 
 /**

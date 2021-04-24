@@ -30,7 +30,7 @@ public class SignUpActivity extends AppCompatActivity {
         setContentView(R.layout.activity_signup);
 
         if (ParseUser.getCurrentUser() != null) {
-            Intent i = new Intent(this, SearchActivity.class);
+            Intent i = new Intent(this, MainActivity.class);
             startActivity(i);
             finish();
         }
@@ -107,7 +107,7 @@ public class SignUpActivity extends AppCompatActivity {
     }
 
     private void goSearchActivity() {
-        Intent i = new Intent(this, SearchActivity.class);
+        Intent i = new Intent(this, MainActivity.class);
         startActivity(i);
         finish();
     }

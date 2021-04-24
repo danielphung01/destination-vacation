@@ -17,7 +17,7 @@ import com.codepath.apps.destination_vacation.fragments.SearchFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.parse.ParseUser;
 
-public class SearchActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity {
 
 
     private static final String TAG = "SearchActivity";
