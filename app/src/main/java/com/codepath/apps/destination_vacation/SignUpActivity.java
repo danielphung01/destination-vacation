@@ -3,28 +3,26 @@ package com.codepath.apps.destination_vacation;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.Menu;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.codepath.oauth.OAuthLoginActionBarActivity;
-import com.parse.LogInCallback;
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.parse.ParseException;
 import com.parse.ParseUser;
+import com.parse.SignUpCallback;
 
-import okhttp3.Headers;
+public class SignUpActivity extends AppCompatActivity {
 
-public class SignUpActivity extends OAuthLoginActionBarActivity<RestClient> {
-
-    public static final String TAG = " SignUpActivity";
+    public static final String TAG = "SignUpActivity";
     private EditText etUsernameSignUp;
     private EditText etEmailSignUp;
     private EditText etPasswordSignUp;
     private EditText etConfirmPasswordSignUp;
     private Button btnSignUpScreen;
-    private Button btnSignIn;
+    private Button btnExistingAccount;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,63 +39,76 @@ public class SignUpActivity extends OAuthLoginActionBarActivity<RestClient> {
         etPasswordSignUp = findViewById(R.id.etPasswordSignUp);
         etConfirmPasswordSignUp = findViewById(R.id.etConfirmPasswordSignUp);
         btnSignUpScreen = findViewById(R.id.btnSignUpScreen);
-        btnSignIn = findViewById(R.id.btnSignIn);
+        btnExistingAccount = findViewById(R.id.btnExistingAccount);
 
 
         // Listener for sign up button
         btnSignUpScreen.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.i(TAG, "onClick login button");
+                Log.i(TAG, "onClick signup button");
                 String username = etUsernameSignUp.getText().toString();
                 String email = etEmailSignUp.getText().toString();
                 String password = etPasswordSignUp.getText().toString();
                 String confirm_password = etConfirmPasswordSignUp.getText().toString();
-                loginUser(username, password);
+
+                // Check for valid username, email and password
+                // TODO Instead of toasts change the color of the EditText boxes
+                if (!username.isEmpty()) {
+                    if (email.contains("@") && email.contains(".")) {
+                        if (password.isEmpty())
+                            Toast.makeText(SignUpActivity.this, "Enter a password", Toast.LENGTH_SHORT).show();
+                        else if (!password.equals(confirm_password))
+                            Toast.makeText(SignUpActivity.this, "Passwords do not match", Toast.LENGTH_SHORT).show();
+                        else
+                            // Sign up user only if username, email, and password are valid
+                            signUpUser(username, email, password);
+                    }
+                    else
+                        Toast.makeText(SignUpActivity.this, "Invalid email", Toast.LENGTH_SHORT).show();
+                }
+                else
+                    Toast.makeText(SignUpActivity.this, "Enter a username", Toast.LENGTH_SHORT).show();
             }
         });
 
-        // Listener for login button
-        btnSignIn.setOnClickListener(new View.OnClickListener() {
+        // Listener for existing account
+        btnExistingAccount.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.i(TAG, "onClick signup button");
-                Intent intent = new Intent(SignUpActivity.this, LoginActivity.class);
-                startActivity(intent);
+                Log.i(TAG, "onClick existing account button");
+                Intent i = new Intent(SignUpActivity.this, LoginActivity.class);
+                startActivity(i);
+                finish();
             }
         });
     }
 
-    void loginUser(String username, String password) {
-        Log.i(TAG, "Attempting to login user " + username);
-        // TODO: navigate to the main activity if the user has signed in properly
-        ParseUser.logInInBackground(username, password, new LogInCallback() {
+    // Helper method that creates Parse user and launches search activity
+    private void signUpUser(String username, String email, String password) {
+        Log.i(TAG, "Attempting to sign up user with username " + username);
+        ParseUser user = new ParseUser();
+        user.setUsername(username);
+        user.setEmail(email);
+        user.setPassword(password);
+
+        user.signUpInBackground(new SignUpCallback() {
             @Override
-            public void done(ParseUser user, ParseException e) {
+            public void done(ParseException e) {
                 if (e != null) {
-                    // TODO: better error handling, maybe have text show "Invalid username or password"
-                    Log.e(TAG, "Issue with login", e);
+                    Log.e(TAG, "Issue with sign up", e);
+                    Toast.makeText(SignUpActivity.this, "Issue with sign up!", Toast.LENGTH_SHORT).show();
                     return;
                 }
-                goMainActivity();
-                Toast.makeText(SignUpActivity.this, "Success", Toast.LENGTH_SHORT).show();
+                SignUpActivity.this.goSearchActivity();
+                Toast.makeText(SignUpActivity.this, "Sign up success!", Toast.LENGTH_SHORT).show();
             }
         });
     }
 
-    private void goMainActivity() {
+    private void goSearchActivity() {
         Intent i = new Intent(this, SearchActivity.class);
         startActivity(i);
         finish();
-    }
-
-    @Override
-    public void onLoginSuccess() {
-
-    }
-
-    @Override
-    public void onLoginFailure(Exception e) {
-
     }
 }
