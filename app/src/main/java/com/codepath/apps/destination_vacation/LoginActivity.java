@@ -1,6 +1,7 @@
 package com.codepath.apps.destination_vacation;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -8,6 +9,7 @@ import android.view.Menu;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.codepath.apps.destination_vacation.models.SampleModel;
@@ -27,6 +29,7 @@ public class LoginActivity extends OAuthLoginActionBarActivity<RestClient> {
 	public static final String TAG = "LoginActivity";
 	private EditText etUsername;
 	private EditText etPassword;
+	private TextView tvError;
 	private Button btnLogin;
 	private Button btnSignUp;
 
@@ -42,8 +45,12 @@ public class LoginActivity extends OAuthLoginActionBarActivity<RestClient> {
 		}
 		etUsername = findViewById(R.id.etUsername);
 		etPassword = findViewById(R.id.etPassword);
+		tvError = findViewById(R.id.tvError);
 		btnLogin = findViewById(R.id.btnLogin);
 		btnSignUp = findViewById(R.id.btnSignUp);
+
+		// Set initial incorrect credentials text as invisible
+		tvError.setTextColor(Color.WHITE); // same as background
 
 		// Listener for login button
 		btnLogin.setOnClickListener(new View.OnClickListener() {
@@ -61,10 +68,8 @@ public class LoginActivity extends OAuthLoginActionBarActivity<RestClient> {
 			@Override
 			public void onClick(View v) {
 				Log.i(TAG, "onClick signup button");
-				// TODO: code for signing up (new user)
-				Intent intent = new Intent(LoginActivity.this, SignUpActivity.class);
 
-				startActivity(intent);
+				goSignUpActivity();
 			}
 		});
 
@@ -101,8 +106,8 @@ public class LoginActivity extends OAuthLoginActionBarActivity<RestClient> {
 			@Override
 			public void done(ParseUser user, ParseException e) {
 				if (e != null) {
-					// TODO: better error handling, maybe have text show "Invalid username or password"
-					Log.e(TAG, "Issue with login", e);
+					tvError.setTextColor(getResources().getColor(R.color.error));
+					Log.e(TAG, "Issue with login!", e);
 					return;
 				}
 				goMainActivity();
@@ -143,6 +148,12 @@ public class LoginActivity extends OAuthLoginActionBarActivity<RestClient> {
 	private void goMainActivity() {
 		Intent i = new Intent(this, SearchActivity.class);
 		startActivity(i);
+		finish();
+	}
+
+	private void goSignUpActivity() {
+		Intent intent = new Intent(LoginActivity.this, SignUpActivity.class);
+		startActivity(intent);
 		finish();
 	}
 }
