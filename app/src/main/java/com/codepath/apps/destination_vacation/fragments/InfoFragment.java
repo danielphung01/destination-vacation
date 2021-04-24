@@ -1,4 +1,4 @@
-package com.codepath.apps.destination_vacation;
+package com.codepath.apps.destination_vacation.fragments;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -13,16 +13,18 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.codepath.apps.destination_vacation.LoginActivity;
+import com.codepath.apps.destination_vacation.R;
 import com.parse.ParseUser;
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class ProfileFragment extends Fragment {
+public class InfoFragment extends Fragment {
 
     private Button btnLogout;
 
-    public ProfileFragment() {
+    public InfoFragment() {
         // Required empty public constructor
     }
 
@@ -30,7 +32,7 @@ public class ProfileFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_profile, container, false);
+        return inflater.inflate(R.layout.fragment_info, container, false);
     }
 
     // This event is triggered soon after onCreateView().
@@ -38,15 +40,15 @@ public class ProfileFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
-        // This button is temporary for testing purposes, logout functionality should only be in profile fragment
+        // TODO This button is temporary for testing purposes, logout functionality should only be in profile fragment
         btnLogout = view.findViewById(R.id.btnLogout);
+
+        // Listener for logout button
         btnLogout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 // log the user out
                 ParseUser.logOut();
-                ParseUser currentUser = ParseUser.getCurrentUser(); // this will now be null
                 Toast.makeText(getContext(), "Logged out", Toast.LENGTH_SHORT).show();
                 // return to login activity
                 goLoginActivity();

@@ -40,15 +40,15 @@ public class SearchFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
-        // This button is temporary for testing purposes, logout functionality should only be in profile fragment
+        // TODO This button is temporary for testing purposes, logout functionality should only be in profile fragment
         btnLogout = view.findViewById(R.id.btnLogout);
+
+        // Listener for logout button
         btnLogout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 // log the user out
                 ParseUser.logOut();
-                ParseUser currentUser = ParseUser.getCurrentUser(); // this will now be null
                 Toast.makeText(getContext(), "Logged out", Toast.LENGTH_SHORT).show();
                 // return to login activity
                 goLoginActivity();
