@@ -43,6 +43,7 @@ dependencies {
     implementation 'commons-codec:commons-codec:20041127.091804'
     implementation 'androidx.appcompat:appcompat:1.2.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
+    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     // Room for simple persistence with an ORM
     def room_version = "2.2.6"
     implementation "androidx.room:room-runtime:$room_version"
@@ -56,5 +57,8 @@ dependencies {
     annotationProcessor 'com.github.bumptech.glide:compiler:4.12.0'
 
     implementation 'com.squareup.okhttp3:logging-interceptor:3.8.1' // for logging API calls to LogCat
+
+    implementation "androidx.appcompat:appcompat:${appCompatVersion}"
+    implementation "com.google.android.material:material:${designSupportVersion}"
 
 }
