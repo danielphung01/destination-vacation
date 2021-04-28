@@ -26,13 +26,13 @@
         android:inputType="textPassword" />
 
     <TextView
-        android:id="@+id/tvError"
+        android:id="@+id/tvLoginError"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
-        android:text="Invalid email, username, or password. Please try again."
         android:gravity="center"
-        android:textColor="@color/background" />
+        android:text="Invalid email, username, or password. Please try again."
+        android:textColor="@color/error" />
 
     <Button
         android:id="@+id/btnLogin"

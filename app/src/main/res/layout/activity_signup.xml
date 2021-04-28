@@ -16,7 +16,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ems="10"
-        android:hint="Enter username"
+        android:hint="username"
         android:inputType="textPersonName" />
 
     <EditText
@@ -24,7 +24,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ems="10"
-        android:hint="Enter email"
+        android:hint="email"
         android:inputType="textEmailAddress" />
 
     <EditText
@@ -32,7 +32,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ems="10"
-        android:hint="Password"
+        android:hint="password"
         android:inputType="textPassword" />
 
     <EditText
@@ -40,10 +40,16 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ems="10"
-        android:hint="Confirm your password"
+        android:hint="confirm password"
         android:inputType="textPassword" />
 
-
+    <TextView
+        android:id="@+id/tvSignUpError"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:gravity="center"
+        android:textColor="@color/error" />
 
     <Button
         android:id="@+id/btnSignUpScreen"

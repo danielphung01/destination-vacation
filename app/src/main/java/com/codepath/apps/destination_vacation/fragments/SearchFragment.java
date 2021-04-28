@@ -1,6 +1,5 @@
 package com.codepath.apps.destination_vacation.fragments;
 
-import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -14,11 +13,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
 
-import com.codepath.apps.destination_vacation.LoginActivity;
 import com.codepath.apps.destination_vacation.R;
-import com.parse.ParseUser;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -49,7 +45,7 @@ public class SearchFragment extends Fragment {
 
         etSearch = view.findViewById(R.id.etSearch);
         btnSearch = view.findViewById(R.id.btnSearch);
-        rvPosts = view.findViewById(R.id.rvPosts);
+        rvPosts = view.findViewById(R.id.rvLocations);
 
         btnSearch.setOnClickListener(new View.OnClickListener() {
             @Override

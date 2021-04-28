@@ -29,7 +29,7 @@ public class LoginActivity extends OAuthLoginActionBarActivity<RestClient> {
 	public static final String TAG = "LoginActivity";
 	private EditText etUsername;
 	private EditText etPassword;
-	private TextView tvError;
+	private TextView tvLoginError;
 	private Button btnLogin;
 	private Button btnSignUp;
 
@@ -45,12 +45,12 @@ public class LoginActivity extends OAuthLoginActionBarActivity<RestClient> {
 		}
 		etUsername = findViewById(R.id.etUsername);
 		etPassword = findViewById(R.id.etPassword);
-		tvError = findViewById(R.id.tvError);
+		tvLoginError = findViewById(R.id.tvLoginError);
 		btnLogin = findViewById(R.id.btnLogin);
 		btnSignUp = findViewById(R.id.btnSignUp);
 
-		// Set initial incorrect credentials text as invisible
-		tvError.setTextColor(Color.WHITE); // same as background
+		// Hide incorrect credentials text
+		tvLoginError.setVisibility(View.INVISIBLE);
 
 		// Listener for login button
 		btnLogin.setOnClickListener(new View.OnClickListener() {
@@ -59,7 +59,6 @@ public class LoginActivity extends OAuthLoginActionBarActivity<RestClient> {
 				Log.i(TAG, "onClick login button");
 				String username = etUsername.getText().toString();
 				String password = etPassword.getText().toString();
-				// TODO: add email signin functionality (look for '@' to determine if signing in with email or username)
 				loginUser(username, password);
 			}
 		});
@@ -106,7 +105,8 @@ public class LoginActivity extends OAuthLoginActionBarActivity<RestClient> {
 			@Override
 			public void done(ParseUser user, ParseException e) {
 				if (e != null) {
-					tvError.setTextColor(getResources().getColor(R.color.error));
+					// Show incorrect credentials text
+					tvLoginError.setVisibility(View.VISIBLE);
 					Log.e(TAG, "Issue with login!", e);
 					return;
 				}

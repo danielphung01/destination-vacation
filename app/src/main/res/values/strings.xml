@@ -6,5 +6,10 @@
     <string name="intent_scheme">oauth</string>
     <string name="intent_host">cprest</string>
     <string name="log_out_text">LOG OUT</string>
+    <string name="errorInvalidEmail">Invalid email address.</string>
+    <string name="errorNotMatchingPasswords">Passwords do not match.</string>
+    <string name="errorNoEmail">Enter an email address.</string>
+    <string name="errorNoPassword">Enter a password.</string>
+    <string name="errorNoUsername">Enter a username.</string>
 
 </resources>
