@@ -22,7 +22,7 @@ import com.codepath.apps.destination_vacation.R;
 public class SearchFragment extends Fragment {
 
     private static final String TAG = "SearchFragment";
-    private RecyclerView rvPosts;
+    private RecyclerView rvLocations;
     private Button btnSearch;
     private EditText etSearch;
 
@@ -45,7 +45,7 @@ public class SearchFragment extends Fragment {
 
         etSearch = view.findViewById(R.id.etSearch);
         btnSearch = view.findViewById(R.id.btnSearch);
-        rvPosts = view.findViewById(R.id.rvLocations);
+        rvLocations = view.findViewById(R.id.rvLocations);
 
         btnSearch.setOnClickListener(new View.OnClickListener() {
             @Override
