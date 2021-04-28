@@ -6,11 +6,14 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import com.codepath.apps.destination_vacation.LoginActivity;
@@ -22,7 +25,10 @@ import com.parse.ParseUser;
  */
 public class SearchFragment extends Fragment {
 
-    private Button btnLogout;
+    private static final String TAG = "SearchFragment";
+    private RecyclerView rvPosts;
+    private Button btnSearch;
+    private EditText etSearch;
 
     public SearchFragment() {
         // Required empty public constructor
@@ -40,27 +46,17 @@ public class SearchFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        // TODO This button is temporary for testing purposes, logout functionality should only be in profile fragment
-        btnLogout = view.findViewById(R.id.btnLogout);
 
-        // Listener for logout button
-        btnLogout.setOnClickListener(new View.OnClickListener() {
+        etSearch = view.findViewById(R.id.etSearch);
+        btnSearch = view.findViewById(R.id.btnSearch);
+        rvPosts = view.findViewById(R.id.rvPosts);
+
+        btnSearch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // log the user out
-                ParseUser.logOut();
-                Toast.makeText(getContext(), "Logged out", Toast.LENGTH_SHORT).show();
-                // return to login activity
-                goLoginActivity();
+                Log.i(TAG, "Search button pressed. Location: " + etSearch.getText().toString());
             }
         });
     }
 
-    // temporary method
-    private void goLoginActivity() {
-        Intent i = new Intent(getActivity(), LoginActivity.class);
-        startActivity(i);
-        if (getActivity() != null)
-            getActivity().finish();
-    }
 }
