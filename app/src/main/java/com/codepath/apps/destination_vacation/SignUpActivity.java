@@ -1,11 +1,13 @@
 package com.codepath.apps.destination_vacation;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -21,6 +23,7 @@ public class SignUpActivity extends AppCompatActivity {
     private EditText etEmailSignUp;
     private EditText etPasswordSignUp;
     private EditText etConfirmPasswordSignUp;
+    private TextView tvSignUpError;
     private Button btnSignUpScreen;
     private Button btnExistingAccount;
 
@@ -38,9 +41,12 @@ public class SignUpActivity extends AppCompatActivity {
         etEmailSignUp = findViewById(R.id.etEmailSignUp);
         etPasswordSignUp = findViewById(R.id.etPasswordSignUp);
         etConfirmPasswordSignUp = findViewById(R.id.etConfirmPasswordSignUp);
+        tvSignUpError = findViewById(R.id.tvSignUpError);
         btnSignUpScreen = findViewById(R.id.btnSignUpScreen);
         btnExistingAccount = findViewById(R.id.btnExistingAccount);
 
+        // Set initial incorrect credentials text to blank
+        tvSignUpError.setText("");
 
         // Listener for sign up button
         btnSignUpScreen.setOnClickListener(new View.OnClickListener() {
@@ -52,23 +58,37 @@ public class SignUpActivity extends AppCompatActivity {
                 String password = etPasswordSignUp.getText().toString();
                 String confirm_password = etConfirmPasswordSignUp.getText().toString();
 
-                // Check for valid username, email and password
-                // TODO Instead of toasts change the color of the EditText boxes
+                // Check for valid username/email and password
+                // Show incorrect credentials text if any credentials are invalid
                 if (!username.isEmpty()) {
-                    if (email.contains("@") && email.contains(".")) {
-                        if (password.isEmpty())
-                            Toast.makeText(SignUpActivity.this, "Enter a password", Toast.LENGTH_SHORT).show();
-                        else if (!password.equals(confirm_password))
-                            Toast.makeText(SignUpActivity.this, "Passwords do not match", Toast.LENGTH_SHORT).show();
-                        else
-                            // Sign up user only if username, email, and password are valid
-                            signUpUser(username, email, password);
+                    if (!email.isEmpty())
+                    {
+                        if (email.contains("@") && email.contains(".") &&
+                                (email.indexOf('.') - email.indexOf('@') - 1) > 0 &&
+                                (!email.endsWith("."))) {
+                            if (password.isEmpty()) {
+                                // No password found
+                                tvSignUpError.setText(R.string.errorNoPassword);
+                            } else if (!password.equals(confirm_password)) {
+                                // Passwords do not match
+                                tvSignUpError.setText(R.string.errorNotMatchingPasswords);
+                            } else {
+                                // Sign up user only if username/email and password are valid
+                                signUpUser(username, email, password);
+                            }
+                        } else {
+                            // Invalid email detected (incorrect syntax)
+                            // Valid example: "example@example.example"
+                            tvSignUpError.setText(R.string.errorInvalidEmail);
+                        }
+                    } else {
+                        // No email found
+                        tvSignUpError.setText(R.string.errorNoEmail);
                     }
-                    else
-                        Toast.makeText(SignUpActivity.this, "Invalid email", Toast.LENGTH_SHORT).show();
+                } else {
+                    // No username found
+                    tvSignUpError.setText(R.string.errorNoUsername);
                 }
-                else
-                    Toast.makeText(SignUpActivity.this, "Enter a username", Toast.LENGTH_SHORT).show();
             }
         });
 
