@@ -36,9 +36,9 @@ public class SearchFragment extends Fragment {
 
     RestClient client;
 
-    private RecyclerView rvPosts;
-    private Button btnSearch;
     private EditText etSearch;
+    private Button btnSearch;
+    private RecyclerView rvLocations;
 
     public SearchFragment() {
         // Required empty public constructor
@@ -59,13 +59,15 @@ public class SearchFragment extends Fragment {
 
         etSearch = view.findViewById(R.id.etSearch);
         btnSearch = view.findViewById(R.id.btnSearch);
-        rvPosts = view.findViewById(R.id.rvPosts);
+        rvLocations = view.findViewById(R.id.rvLocations);
 
         // TODO: error here, not running properly, client is still null
         client = RestApplication.getRestClient(getContext());
 
-        // client = TwitterApp.getRestClient(this);
-        // tweetDao = ((TwitterApp) getApplicationContext()).getMyDatabase().tweetDao();
+        // Referencing this code:
+        //  client = TwitterApp.getRestClient(this);
+        //  tweetDao = ((TwitterApp) getApplicationContext()).getMyDatabase().tweetDao();
+
 
         btnSearch.setOnClickListener(new View.OnClickListener() {
             @Override
