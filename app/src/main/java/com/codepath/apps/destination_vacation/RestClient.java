@@ -2,6 +2,8 @@ package com.codepath.apps.destination_vacation;
 
 import android.content.Context;
 
+import com.codepath.asynchttpclient.RequestParams;
+import com.codepath.asynchttpclient.callback.JsonHttpResponseHandler;
 import com.codepath.oauth.OAuthBaseClient;
 import com.github.scribejava.core.builder.api.BaseApi;
 
@@ -41,6 +43,13 @@ public class RestClient extends OAuthBaseClient {
 
 	// DEFINE METHODS for different API endpoints here
 
+	public void getLocations(JsonHttpResponseHandler handler) {
+		String apiUrl = getApiUrl("openapi.en.json");
+		// Can specify query string params directly or through Request Params
+		RequestParams params = new RequestParams();
+		params.put("format", "json");
+		client.get(apiUrl, params, handler);
+	}
 
 	/* 1. Define the endpoint URL with getApiUrl and pass a relative path to the endpoint
 	 * 	  i.e getApiUrl("statuses/home_timeline.json");
