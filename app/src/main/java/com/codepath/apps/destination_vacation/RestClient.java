@@ -43,11 +43,18 @@ public class RestClient extends OAuthBaseClient {
 
 	// DEFINE METHODS for different API endpoints here
 
-	public void getLocations(JsonHttpResponseHandler handler) {
-		String apiUrl = getApiUrl("openapi.en.json");
+	// We are using: /{lang}/places/radius
+	public void getLocations(JsonHttpResponseHandler handler, int radius, String location, String kinds, int limit) { // TODO: might need to switch location for long/lat
+		String apiUrl = getApiUrl("/openapi.en.json");
 		// Can specify query string params directly or through Request Params
 		RequestParams params = new RequestParams();
-		params.put("format", "json");
+
+		params.put("lang", "en");
+		params.put("radius", radius);		// maximum distance from selected location
+		//params.put("location", location);	// selected location. TODO: may have to convert location to long/lat since "location" might not exist in  /{lang}/places/radius
+		params.put("kinds", kinds);			// categories selected (to filter results)
+		params.put("limit", limit);			// max number of returned objects
+
 		client.get(apiUrl, params, handler);
 	}
 

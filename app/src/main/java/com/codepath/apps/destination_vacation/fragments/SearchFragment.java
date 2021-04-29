@@ -7,6 +7,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.appcompat.app.AppCompatActivity;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -61,6 +62,7 @@ public class SearchFragment extends Fragment {
         btnSearch = view.findViewById(R.id.btnSearch);
         rvLocations = view.findViewById(R.id.rvLocations);
 
+
         // TODO: error here, not running properly, client is still null
         client = RestApplication.getRestClient(getContext());
 
@@ -79,7 +81,7 @@ public class SearchFragment extends Fragment {
     }
 
 
-    private void populateSearchResults() { // TODO: this method should probably take in some parameters: radius size, categories selected, and searched location
+    private void populateSearchResults() { // TODO: this method should probably take in some other parameters, for ex: radius size, categories selected, and searched location
         client.getLocations(new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Headers headers, JSON json) {
@@ -91,6 +93,6 @@ public class SearchFragment extends Fragment {
             public void onFailure(int statusCode, Headers headers, String response, Throwable throwable) {
                 Log.e(TAG, "onFailure" + response, throwable);
             }
-        });
+        }, 50, "Pomona", "interesting_places", 10); // TODO: pass in variables instead of literals
     }
 }
