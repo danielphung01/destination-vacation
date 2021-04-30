@@ -129,3 +129,6 @@ Sprint 2 : SET UP Login & Sign Up
 
 ### Build Sprint 2 - Sign Up Screen 
 <img src='DestinationVacation.gif' title='Build Sprint 2' alt='Build Sprint 2'/>
+
+### Build Sprint 3 - Seach/Profile Screen 
+<img src='destination_sprint3.gif' title='Build Sprint 3' alt='Build Sprint 3'/>
