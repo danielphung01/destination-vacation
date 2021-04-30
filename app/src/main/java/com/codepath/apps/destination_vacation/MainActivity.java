@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
+import android.widget.LinearLayout;
 
 import com.codepath.apps.destination_vacation.fragments.InfoFragment;
 import com.codepath.apps.destination_vacation.fragments.ProfileFragment;

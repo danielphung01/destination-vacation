@@ -11,6 +11,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.codepath.apps.destination_vacation.LoginActivity;
@@ -22,7 +24,13 @@ import com.parse.ParseUser;
  */
 public class ProfileFragment extends Fragment {
 
-    private Button btnLogout;
+    public static final String TAG = "ProfileActivity";
+    private TextView user_profile;
+    private ImageView profile_img;
+    private TextView history_tv;
+    private TextView bookmarks_tv;
+    private Button btnBack;
+
 
     public ProfileFragment() {
         // Required empty public constructor
@@ -40,10 +48,10 @@ public class ProfileFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        btnLogout = view.findViewById(R.id.btnLogout);
+        btnBack = view.findViewById(R.id.btnBack);
 
         // Listener for logout button
-        btnLogout.setOnClickListener(new View.OnClickListener() {
+        btnBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 // log the user out
