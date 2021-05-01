@@ -30,6 +30,10 @@ Sprint 2 : SET UP Login & Sign Up
 - [x] Login functionality
 - [x] Sign Up functionality
 
+Sprint 3 : Search/Profile Page
+- [x] User can search a location
+- [x] User can view Profile screen and view bookmarks and history 
+
 ### 1. User Stories (Required and Optional)
 
 **Required Must-have Stories**
