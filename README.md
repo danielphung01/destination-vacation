@@ -34,7 +34,7 @@ Sprint 3 : Search/Profile Page
 - [x] User can search a location
 - [x] User can view Profile screen and view bookmarks and history 
 
-Spring 4 : Info Screen / Touch Ups 
+Sprint 4 : Info Screen / Touch Ups 
 - [x] Create xml framework of Info Screen
 - [x] Touch up Login, Sign Up, Search & Profile Page
 - [ ] // Note : Rest client that codepath gave us doesnt support our api
