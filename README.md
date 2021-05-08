@@ -134,13 +134,13 @@ Sprint 4 : Info Screen / Touch Ups
 
 ## GIF
 ### Build Sprint 1
-<img src='walkthrough_sprint1' title='Build Sprint 1' alt='Build Sprint 1'/>
+<img src='walkthrough_sprint1.gif' title='Build Sprint 1' alt='Build Sprint 1'/>
 
 ### Build Sprint 2 - Sign Up Screen 
-<img src='walkthrough_sprint2' title='Build Sprint 2' alt='Build Sprint 2'/>
+<img src='walkthrough_sprint2.gif' title='Build Sprint 2' alt='Build Sprint 2'/>
 
 ### Build Sprint 3 - Seach/Profile Screen 
-<img src='walkthrough_sprint3' title='Build Sprint 3' alt='Build Sprint 3'/>
+<img src='walkthrough_sprint3.gif' title='Build Sprint 3' alt='Build Sprint 3'/>
 
 ### Build Sprint 4 - Info Screen 
-<img src='walkthrough_sprint4' title='Build Sprint 3' alt='Build Sprint 4'/>
+<img src='walkthrough_sprint4.gif' title='Build Sprint 3' alt='Build Sprint 4'/>
