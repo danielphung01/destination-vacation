@@ -6,6 +6,8 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -76,6 +78,9 @@ public class SearchFragment extends Fragment {
             public void onClick(View v) {
                 Log.i(TAG, "Search button pressed. Location: " + etSearch.getText().toString());
                 //populateSearchResults();    // TODO: running this method crashes the app because client is not set up, still null
+
+                // Go to info fragment
+                goInfoFragment();
             }
         });
     }
@@ -94,5 +99,15 @@ public class SearchFragment extends Fragment {
                 Log.e(TAG, "onFailure" + response, throwable);
             }
         }, 50, "Pomona", "interesting_places", 10); // TODO: pass in variables instead of literals
+    }
+
+    // Method to go to infoFragment
+    private void goInfoFragment() {
+        Fragment fragment = new InfoFragment();
+        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.flContainer, fragment);
+        fragmentTransaction.addToBackStack(null);
+        fragmentTransaction.commit();
     }
 }

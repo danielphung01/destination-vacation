@@ -1,17 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
     tools:context=".fragments.InfoFragment">
 
-    <Button
-        android:id="@+id/btnLogout"
-        android:layout_width="wrap_content"
+    <TextView
+        android:id="@+id/tvName"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="logout1"
+        android:paddingLeft="5dp"
+        android:paddingRight="5dp"
+        android:paddingTop="5dp"
+        android:text="Location Name"
+        android:textSize="30sp" />
+
+    <Button
+        android:id="@+id/btnSave"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_gravity="end"
+        android:foreground="@drawable/ic_baseline_bookmark_border_24"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-</FrameLayout>
+    <TextView
+        android:id="@+id/tvDescription"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Description of location."
+        android:paddingLeft="5dp"
+        android:paddingRight="5dp"
+        android:textSize="14sp" />
+
+
+</LinearLayout>
