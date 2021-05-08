@@ -141,3 +141,6 @@ Sprint 4 : Info Screen / Touch Ups
 
 ### Build Sprint 3 - Seach/Profile Screen 
 <img src='destination_sprint3.gif' title='Build Sprint 3' alt='Build Sprint 3'/>
+
+### Build Sprint 4 - Info Screen 
+XML File Only 
