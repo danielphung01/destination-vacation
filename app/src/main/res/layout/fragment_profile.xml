@@ -24,6 +24,7 @@
         android:layout_marginTop="10dp"
         android:text="Your Profile"
         android:gravity="center"
+        android:textColor="@android:color/black"
         android:textSize="40sp" />
 
     <ImageView
@@ -44,6 +45,7 @@
         android:layout_marginTop="200dp"
         android:gravity="center"
         android:text="Recent Searches"
+        android:textColor="@android:color/black"
         android:textSize="30sp" />
 
 
@@ -61,6 +63,7 @@
         android:layout_marginTop="400dp"
         android:gravity="center"
         android:text="Bookmarks"
+        android:textColor="@android:color/black"
         android:textSize="30sp" />
 
     <androidx.recyclerview.widget.RecyclerView
@@ -76,7 +79,8 @@
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="650dp"
-        android:text="Back" />
+        android:backgroundTint="#add8e6"
+        android:text="Log Out" />
 
 </FrameLayout>
 </ScrollView>
