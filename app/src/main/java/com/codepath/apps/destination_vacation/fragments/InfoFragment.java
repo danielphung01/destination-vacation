@@ -12,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.codepath.apps.destination_vacation.LoginActivity;
@@ -23,6 +24,8 @@ import com.parse.ParseUser;
  */
 public class InfoFragment extends Fragment {
 
+    private TextView tvName;
+    private TextView tvDescription;
     private Button btnSave;
 
     int images[] = {R.drawable.ic_baseline_bookmark_border_24, R.drawable.ic_baseline_bookmark_24};
@@ -45,7 +48,26 @@ public class InfoFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        String name = "";
+        String categories = "";
+
+        tvName = view.findViewById(R.id.tvName);
+        tvDescription = view.findViewById(R.id.tvDescription);
         btnSave = view.findViewById(R.id.btnSave);
+
+        // Retrieve destination properties from Bundle
+        Bundle bundle = this.getArguments();
+        if (bundle != null) {
+            name = bundle.getString("name");
+            categories = bundle.getString("categories");
+        }
+
+        // Set TextViews to destination properties
+        // TODO Add and/or change setText methods to take different properties as needed
+        tvName.setText(name);
+        tvDescription.setText("Categories: " + categories);
+
+
         // TODO: This should check if the user has this location bookmarked or not and set the button image accordingly.
         i = 0;
         btnSave.setBackgroundResource(images[i]);

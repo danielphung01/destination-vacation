@@ -1,6 +1,5 @@
 package com.codepath.apps.destination_vacation.fragments;
 
-import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -8,8 +7,8 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.appcompat.app.AppCompatActivity;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -17,16 +16,20 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
 
-import com.codepath.apps.destination_vacation.LoginActivity;
+import com.codepath.apps.destination_vacation.BuildConfig;
 import com.codepath.apps.destination_vacation.R;
-import com.codepath.apps.destination_vacation.RestApplication;
-import com.codepath.apps.destination_vacation.RestClient;
+import com.codepath.apps.destination_vacation.adapters.DestinationAdapter;
+import com.codepath.apps.destination_vacation.models.Destination;
+import com.codepath.asynchttpclient.AsyncHttpClient;
 import com.codepath.asynchttpclient.callback.JsonHttpResponseHandler;
-import com.parse.ParseUser;
 
 import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import okhttp3.Headers;
 
@@ -37,15 +40,14 @@ public class SearchFragment extends Fragment {
 
     private static final String TAG = "SearchFragment";
 
-    RestClient client;
+    // TODO Coordinates and place type are hardcoded
+    public static final String URL = "https://api.opentripmap.com/0.1/en/places/bbox?lon_min=-120&lat_min=25&lon_max=0&lat_max=50&kinds=interesting_places&format=json&apikey=" + BuildConfig.OPENTRIPMAP_API_KEY;
 
     private EditText etSearch;
     private Button btnSearch;
     private RecyclerView rvLocations;
 
-    public SearchFragment() {
-        // Required empty public constructor
-    }
+    List<Destination> destinations;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -59,55 +61,48 @@ public class SearchFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
         etSearch = view.findViewById(R.id.etSearch);
         btnSearch = view.findViewById(R.id.btnSearch);
-        rvLocations = view.findViewById(R.id.rvLocations);
+        rvLocations = view.findViewById(R.id.rvDestinations);
+        destinations = new ArrayList<>();
 
+        // Create the adapter
+        DestinationAdapter destinationAdapter = new DestinationAdapter(getContext(), destinations);
 
-        // TODO: error here, not running properly, client is still null
-        client = RestApplication.getRestClient(getContext());
+        // Set the adapter on the recycler view
+        rvLocations.setAdapter(destinationAdapter);
 
-        // Referencing this code:
-        //  client = TwitterApp.getRestClient(this);
-        //  tweetDao = ((TwitterApp) getApplicationContext()).getMyDatabase().tweetDao();
+        // Set a Layout Manager on the recycler view
+        rvLocations.setLayoutManager(new LinearLayoutManager(getContext()));
 
+        final AsyncHttpClient client = new AsyncHttpClient();
 
         btnSearch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.i(TAG, "Search button pressed. Location: " + etSearch.getText().toString());
-                //populateSearchResults();    // TODO: running this method crashes the app because client is not set up, still null
+                Log.i(TAG, "Search button pressed. Query: " + etSearch.getText().toString());
 
-                // Go to info fragment
-                goInfoFragment();
+                client.get(URL, new JsonHttpResponseHandler() {
+                    @Override
+                    public void onSuccess(int statusCode, Headers headers, JSON json) {
+                        Log.d(TAG, "onSuccess");
+                        try {
+                            JSONArray results = json.jsonArray;
+                            Log.i(TAG, "Results: " + results.toString());
+                            destinations.addAll(Destination.fromJsonArray(results));
+                            destinationAdapter.notifyDataSetChanged();
+                            Log.i(TAG, "Number of results: " + destinations.size());
+                        } catch(JSONException e) {
+                            Log.e(TAG, "Hit json exception", e);
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(int statusCode, Headers headers, String response, Throwable throwable) {
+                        Log.d(TAG, "onFailure");
+                    }
+                });
             }
         });
-    }
-
-
-    private void populateSearchResults() { // TODO: this method should probably take in some other parameters, for ex: radius size, categories selected, and searched location
-        client.getLocations(new JsonHttpResponseHandler() {
-            @Override
-            public void onSuccess(int statusCode, Headers headers, JSON json) {
-                Log.i(TAG, "onSuccess" + json.toString());
-                // JSONArray jsonArray = json.jsonArray;
-            }
-
-            @Override
-            public void onFailure(int statusCode, Headers headers, String response, Throwable throwable) {
-                Log.e(TAG, "onFailure" + response, throwable);
-            }
-        }, 50, "Pomona", "interesting_places", 10); // TODO: pass in variables instead of literals
-    }
-
-    // Method to go to infoFragment
-    private void goInfoFragment() {
-        Fragment fragment = new InfoFragment();
-        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.replace(R.id.flContainer, fragment);
-        fragmentTransaction.addToBackStack(null);
-        fragmentTransaction.commit();
     }
 }
