@@ -67,7 +67,7 @@ public class SearchFragment extends Fragment {
         destinations = new ArrayList<>();
 
         // Create the adapter
-        DestinationAdapter destinationAdapter = new DestinationAdapter(getContext(), destinations);
+        final DestinationAdapter destinationAdapter = new DestinationAdapter(getContext(), destinations);
 
         // Set the adapter on the recycler view
         rvLocations.setAdapter(destinationAdapter);
