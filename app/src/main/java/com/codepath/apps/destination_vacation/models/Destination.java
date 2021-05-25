@@ -20,6 +20,29 @@ public class Destination {
     public Destination(JSONObject jsonObject) throws JSONException {
         name = jsonObject.getString("name");
         categories = jsonObject.getString("kinds");
+
+
+        // Format categories string to be displayed
+        categories = Character.toUpperCase(categories.charAt(0)) + categories.substring(1);
+        for (int i = 1; i < categories.length(); i++) {
+            switch (categories.charAt(i)) {
+                case '_':
+                    if (categories.substring(i+1, i+4).compareTo("and") == 0)
+                        categories = categories.substring(0, i) + " " +
+                                categories.substring(i+1);
+                    else
+                        categories = categories.substring(0, i) + " " +
+                                Character.toUpperCase(categories.charAt(i+1)) +
+                                categories.substring(i+2);
+                    break;
+                case ',':
+                    categories = categories.substring(0, i) + ", " +
+                            Character.toUpperCase(categories.charAt(i+1)) +
+                            categories.substring(i+2);
+                    break;
+                default:
+            }
+        }
     }
 
     public static List<Destination> fromJsonArray(JSONArray destinationJsonArray) throws JSONException {

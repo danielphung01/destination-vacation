@@ -11,5 +11,6 @@
     <string name="errorNoEmail">Enter an email address.</string>
     <string name="errorNoPassword">Enter a password.</string>
     <string name="errorNoUsername">Enter a username.</string>
+    <string name="sample_text">text_here</string>
 
 </resources>

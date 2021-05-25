@@ -62,12 +62,12 @@ public class DestinationAdapter extends RecyclerView.Adapter<DestinationAdapter.
 
         RelativeLayout container;
         TextView tvDestinationName;
-        TextView tvDestinationRating;
+        TextView tvDestinationCategories;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             tvDestinationName = itemView.findViewById(R.id.tvDestinationName);
-            tvDestinationRating = itemView.findViewById(R.id.tvDestinationRating);
+            tvDestinationCategories = itemView.findViewById(R.id.tvDestinationCategories);
             container = itemView.findViewById(R.id.container);
         }
 
@@ -75,26 +75,23 @@ public class DestinationAdapter extends RecyclerView.Adapter<DestinationAdapter.
             name = destination.getName();
             categories = destination.getCategories();
             tvDestinationName.setText("Name: " + name);
-            tvDestinationRating.setText("Categories: " + categories);
+            tvDestinationCategories.setText("Categories: " + categories);
 
             // 1. Register click listener on whole row
-            container.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    // 2. Put destination's properties into Bundle
-                    Bundle bundle = new Bundle();
-                    bundle.putString("name", name);
-                    bundle.putString("categories", categories);
+            container.setOnClickListener(v -> {
+                // 2. Put destination's properties into Bundle
+                Bundle bundle = new Bundle();
+                bundle.putString("name", name);
+                bundle.putString("categories", categories);
 
-                    InfoFragment infoFragment = new InfoFragment();
-                    infoFragment.setArguments(bundle);
+                InfoFragment infoFragment = new InfoFragment();
+                infoFragment.setArguments(bundle);
 
-                    // 3. Navigate to info fragment
-                    ((FragmentActivity) context).getSupportFragmentManager().beginTransaction()
-                            .replace(R.id.flContainer, infoFragment)
-                            .addToBackStack(null)
-                            .commit();
-                }
+                // 3. Navigate to info fragment
+                ((FragmentActivity) context).getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.flContainer, infoFragment)
+                        .addToBackStack(null)
+                        .commit();
             });
         }
     }
