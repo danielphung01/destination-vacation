@@ -7,6 +7,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -14,6 +15,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 
@@ -32,6 +34,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import okhttp3.Headers;
+
+import static androidx.core.content.ContextCompat.getSystemService;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -75,11 +79,18 @@ public class SearchFragment extends Fragment {
         // Set a Layout Manager on the recycler view
         rvLocations.setLayoutManager(new LinearLayoutManager(getContext()));
 
+        rvLocations.addItemDecoration(new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL));
+
         final AsyncHttpClient client = new AsyncHttpClient();
 
         btnSearch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                // Lower/close keyboard
+                InputMethodManager imm = (InputMethodManager)getContext().getSystemService(getContext().INPUT_METHOD_SERVICE);
+                imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+
                 Log.i(TAG, "Search button pressed. Query: " + etSearch.getText().toString());
 
                 client.get(URL, new JsonHttpResponseHandler() {

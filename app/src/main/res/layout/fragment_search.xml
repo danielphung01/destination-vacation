@@ -26,11 +26,18 @@
         android:backgroundTint="#add8e6"
         android:text="GO" />
 
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@android:color/darker_gray"/>
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvDestinations"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:padding="8dp"  />
+        android:paddingLeft="8dp"
+        android:paddingRight="8dp"
+        android:paddingBottom="8dp" />
 
 
 </LinearLayout>
