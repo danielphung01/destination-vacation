@@ -13,6 +13,7 @@ public class Destination {
 
     String name;
     String categories;
+    // String image;
 
     // Empty constructor needed by the Parceler library
     public Destination() {}
@@ -20,6 +21,7 @@ public class Destination {
     public Destination(JSONObject jsonObject) throws JSONException {
         name = jsonObject.getString("name");
         categories = jsonObject.getString("kinds");
+        // image = jsonObject.getString("image");
 
 
         // Format categories string to be displayed
@@ -45,6 +47,7 @@ public class Destination {
         }
     }
 
+    // Returns all destination objects from destinationJsonArray
     public static List<Destination> fromJsonArray(JSONArray destinationJsonArray) throws JSONException {
         List<Destination> destinations = new ArrayList<>();
 
@@ -55,7 +58,17 @@ public class Destination {
         return destinations;
     }
 
-    public String getName() { return name; }
+    // Returns a given number of destination objects from destinationJsonArray starting from a given index
+    public static List<Destination> fromJsonArray(JSONArray destinationJsonArray, int limit, int destinationIndex) throws JSONException {
+        List<Destination> destinations = new ArrayList<>();
+            for (int i = destinationIndex; i < destinationIndex + limit; i++) {
+                destinations.add(new Destination(destinationJsonArray.getJSONObject(i)));
+            }
+
+        return destinations;
+    }
+
+        public String getName() { return name; }
 
     public String getCategories() { return categories; }
 }

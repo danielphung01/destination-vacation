@@ -17,9 +17,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.Checkable;
 import android.widget.EditText;
 
 import com.codepath.apps.destination_vacation.BuildConfig;
+import com.codepath.apps.destination_vacation.EndlessRecyclerViewScrollListener;
 import com.codepath.apps.destination_vacation.R;
 import com.codepath.apps.destination_vacation.adapters.DestinationAdapter;
 import com.codepath.apps.destination_vacation.models.Destination;
@@ -51,6 +54,14 @@ public class SearchFragment extends Fragment {
     private Button btnSearch;
     private RecyclerView rvLocations;
 
+    private CheckBox checkBox3;
+
+    EndlessRecyclerViewScrollListener scrollListener;
+
+    private JSONArray results;
+    private final int limit = 10;
+    private int destinationIndex = 0;
+
     List<Destination> destinations;
 
     @Override
@@ -70,6 +81,8 @@ public class SearchFragment extends Fragment {
         rvLocations = view.findViewById(R.id.rvDestinations);
         destinations = new ArrayList<>();
 
+        checkBox3 = view.findViewById(R.id.checkBox3);
+
         // Create the adapter
         final DestinationAdapter destinationAdapter = new DestinationAdapter(getContext(), destinations);
 
@@ -77,11 +90,31 @@ public class SearchFragment extends Fragment {
         rvLocations.setAdapter(destinationAdapter);
 
         // Set a Layout Manager on the recycler view
-        rvLocations.setLayoutManager(new LinearLayoutManager(getContext()));
+        LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
+        rvLocations.setLayoutManager(layoutManager);
 
         rvLocations.addItemDecoration(new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL));
 
         final AsyncHttpClient client = new AsyncHttpClient();
+
+        // Pagination
+        scrollListener = new EndlessRecyclerViewScrollListener(layoutManager) {
+            @Override
+            public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
+                Log.i(TAG, "onLoadMore : " + page);
+
+                try {
+                    destinations.addAll(Destination.fromJsonArray(results, limit, destinationIndex));
+                    destinationIndex += limit;
+                    destinationAdapter.notifyDataSetChanged();
+                    Log.i(TAG, "Current items in recycler view: " + destinations.size());
+                } catch (JSONException e) {
+                    Log.e(TAG, "Hit json exception", e);
+                }
+            }
+        };
+        // Adds the scroll listener to RecyclerView
+        rvLocations.addOnScrollListener(scrollListener);
 
         btnSearch.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -91,6 +124,7 @@ public class SearchFragment extends Fragment {
                 InputMethodManager imm = (InputMethodManager)getContext().getSystemService(getContext().INPUT_METHOD_SERVICE);
                 imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
 
+
                 Log.i(TAG, "Search button pressed. Query: " + etSearch.getText().toString());
 
                 client.get(URL, new JsonHttpResponseHandler() {
@@ -98,11 +132,17 @@ public class SearchFragment extends Fragment {
                     public void onSuccess(int statusCode, Headers headers, JSON json) {
                         Log.d(TAG, "onSuccess");
                         try {
-                            JSONArray results = json.jsonArray;
+                            results = json.jsonArray;
                             Log.i(TAG, "Results: " + results.toString());
-                            destinations.addAll(Destination.fromJsonArray(results));
+
+                            destinations.addAll(Destination.fromJsonArray(results, limit, destinationIndex));
+                            destinationIndex += limit;
+
                             destinationAdapter.notifyDataSetChanged();
-                            Log.i(TAG, "Number of results: " + destinations.size());
+                            Log.i(TAG, "Number of results: " + 500); // Currently, the API request gets the default 500 destinations
+                            Log.i(TAG, "Current items in recycler view: " + destinations.size());
+                            // Log.i(TAG, "Number of results: " + destinations.size());
+                            // Log.i(TAG, "10th item's xid: " + results.getJSONObject(l-1).getString("xid"));
                         } catch(JSONException e) {
                             Log.e(TAG, "Hit json exception", e);
                         }
