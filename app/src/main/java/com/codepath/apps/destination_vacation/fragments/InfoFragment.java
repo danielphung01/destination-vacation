@@ -8,6 +8,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,6 +24,8 @@ import com.parse.ParseUser;
  * A simple {@link Fragment} subclass.
  */
 public class InfoFragment extends Fragment {
+
+    private static final String TAG = "InfoFragment";
 
     private TextView tvName;
     private TextView tvDescription;
@@ -91,4 +94,8 @@ public class InfoFragment extends Fragment {
         });
     }
 
+    // If title in toolbar is clicked
+    public static void onTitleClicked() {
+        Log.d(TAG, "Title was clicked");
+    }
 }

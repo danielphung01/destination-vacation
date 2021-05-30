@@ -7,6 +7,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,7 +25,8 @@ import com.parse.ParseUser;
  */
 public class ProfileFragment extends Fragment {
 
-    public static final String TAG = "ProfileActivity";
+    public static final String TAG = "ProfileFragment";
+
     private TextView user_profile;
     private ImageView profile_img;
     private TextView history_tv;
@@ -69,5 +71,10 @@ public class ProfileFragment extends Fragment {
         startActivity(i);
         if (getActivity() != null)
             getActivity().finish();
+    }
+
+    // If title in toolbar is clicked
+    public static void onTitleClicked() {
+        Log.d(TAG, "Title was clicked");
     }
 }

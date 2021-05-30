@@ -3,6 +3,7 @@
 
     <color name="error">#AF0000</color>
     <color name="background">#FFFFFF</color>
+    <color name="primary_dark">#000000</color>
 
 
 </resources>
