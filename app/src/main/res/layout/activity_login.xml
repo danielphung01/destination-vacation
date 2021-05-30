@@ -48,8 +48,7 @@
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_margin="20dp"
-        android:onClick="loginToRest"
-        android:backgroundTint="#add8e6"
+        android:backgroundTint="#2196F3"
         android:text="@string/login_label" />
 
     <Button
@@ -58,7 +57,7 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
-        android:backgroundTint="#add8e6"
+        android:backgroundTint="#2196F3"
         android:text="Sign Up" />
 
 </LinearLayout>
