@@ -47,17 +47,6 @@ public class Destination {
         }
     }
 
-    // Returns all destination objects from destinationJsonArray
-    public static List<Destination> fromJsonArray(JSONArray destinationJsonArray) throws JSONException {
-        List<Destination> destinations = new ArrayList<>();
-
-        for (int i = 0; i < destinationJsonArray.length(); i++) {
-            destinations.add(new Destination(destinationJsonArray.getJSONObject(i)));
-        }
-
-        return destinations;
-    }
-
     // Returns a given number of destination objects from destinationJsonArray starting from a given index
     public static List<Destination> fromJsonArray(JSONArray destinationJsonArray, int limit, int destinationIndex) throws JSONException {
         List<Destination> destinations = new ArrayList<>();

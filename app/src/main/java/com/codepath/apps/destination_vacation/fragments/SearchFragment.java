@@ -190,6 +190,7 @@ public class SearchFragment extends Fragment {
     public static void onTitleClicked() {
         Log.d(TAG, "Title was clicked");
 
+        // Scroll to top
         nestedScrollView.fullScroll(ScrollView.FOCUS_UP);
     }
 }

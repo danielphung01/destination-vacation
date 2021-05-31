@@ -32,7 +32,7 @@ public class InfoFragment extends Fragment {
     private Button btnSave;
 
     int images[] = {R.drawable.ic_baseline_bookmark_border_24, R.drawable.ic_baseline_bookmark_24};
-    int i = 0;
+    int i;
 
     public InfoFragment() {
         // Required empty public constructor
