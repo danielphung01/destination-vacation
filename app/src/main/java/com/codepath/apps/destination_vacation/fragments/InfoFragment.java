@@ -8,6 +8,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,12 +25,14 @@ import com.parse.ParseUser;
  */
 public class InfoFragment extends Fragment {
 
+    private static final String TAG = "InfoFragment";
+
     private TextView tvName;
     private TextView tvDescription;
     private Button btnSave;
 
     int images[] = {R.drawable.ic_baseline_bookmark_border_24, R.drawable.ic_baseline_bookmark_24};
-    int i = 0;
+    int i;
 
     public InfoFragment() {
         // Required empty public constructor
@@ -91,4 +94,8 @@ public class InfoFragment extends Fragment {
         });
     }
 
+    // If title in toolbar is clicked
+    public static void onTitleClicked() {
+        Log.d(TAG, "Title was clicked");
+    }
 }

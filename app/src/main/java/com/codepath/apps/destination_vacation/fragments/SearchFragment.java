@@ -5,6 +5,7 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.widget.NestedScrollView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -18,6 +19,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.ScrollView;
 
 import com.codepath.apps.destination_vacation.BuildConfig;
 import com.codepath.apps.destination_vacation.R;
@@ -44,6 +46,7 @@ public class SearchFragment extends Fragment {
     // TODO Coordinates and place type are hardcoded
     public static final String URL = "https://api.opentripmap.com/0.1/en/places/bbox?lon_min=-120&lat_min=25&lon_max=0&lat_max=50&kinds=interesting_places&format=json&apikey=" + BuildConfig.OPENTRIPMAP_API_KEY;
 
+    private static NestedScrollView nestedScrollView;
     private EditText etSearch;
     private CheckBox checkBox;
     private CheckBox checkBox2;
@@ -72,6 +75,8 @@ public class SearchFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        nestedScrollView = view.findViewById(R.id.nestedScrollView);
         etSearch = view.findViewById(R.id.etSearch);
         checkBox = view.findViewById(R.id.checkBox);
         checkBox2 = view.findViewById(R.id.checkBox2);
@@ -179,5 +184,13 @@ public class SearchFragment extends Fragment {
                 });
             }
         });
+    }
+
+    // If title in toolbar is clicked
+    public static void onTitleClicked() {
+        Log.d(TAG, "Title was clicked");
+
+        // Scroll to top
+        nestedScrollView.fullScroll(ScrollView.FOCUS_UP);
     }
 }
