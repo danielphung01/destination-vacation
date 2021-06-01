@@ -57,6 +57,7 @@ public class DestinationAdapter extends RecyclerView.Adapter<DestinationAdapter.
 
     public class ViewHolder extends RecyclerView.ViewHolder {
 
+        String xid;
         String name;
         String categories;
 
@@ -72,8 +73,10 @@ public class DestinationAdapter extends RecyclerView.Adapter<DestinationAdapter.
         }
 
         public void bind(Destination destination) {
+            xid = destination.getXid();
             name = destination.getName();
             categories = destination.getCategories();
+
             tvDestinationName.setText("Name: " + name);
             tvDestinationCategories.setText("Categories: " + categories);
 
@@ -81,7 +84,7 @@ public class DestinationAdapter extends RecyclerView.Adapter<DestinationAdapter.
             container.setOnClickListener(v -> {
                 // 2. Put destination's properties into Bundle
                 Bundle bundle = new Bundle();
-                bundle.putString("name", name);
+                bundle.putString("xid", xid);
                 bundle.putString("categories", categories);
 
                 InfoFragment infoFragment = new InfoFragment();

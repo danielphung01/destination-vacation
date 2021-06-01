@@ -13,12 +13,24 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+import com.codepath.apps.destination_vacation.BuildConfig;
 import com.codepath.apps.destination_vacation.LoginActivity;
 import com.codepath.apps.destination_vacation.R;
+import com.codepath.asynchttpclient.AsyncHttpClient;
+import com.codepath.asynchttpclient.callback.JsonHttpResponseHandler;
 import com.parse.ParseUser;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.lang.reflect.Method;
+
+import okhttp3.Headers;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -27,9 +39,19 @@ public class InfoFragment extends Fragment {
 
     private static final String TAG = "InfoFragment";
 
+    // Language is hardcoded as en (english)
+    //public static final String URL = "http://api.opentripmap.com/0.1/en/places/xid/_________?apikey=" + BuildConfig.OPENTRIPMAP_API_KEY;
+    public static String URL = "https://api.opentripmap.com/0.1/en/places/xid/";
+
     private TextView tvName;
-    private TextView tvDescription;
     private Button btnSave;
+    private TextView tvCategories;
+    private TextView tvDescription;
+    private ImageView ivImage;
+
+    private JSONObject result;
+    private String xid = "";
+    private String categories = "Location Categories";
 
     int images[] = {R.drawable.ic_baseline_bookmark_border_24, R.drawable.ic_baseline_bookmark_24};
     int i;
@@ -51,24 +73,56 @@ public class InfoFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        String name = "";
-        String categories = "";
-
         tvName = view.findViewById(R.id.tvName);
-        tvDescription = view.findViewById(R.id.tvDescription);
         btnSave = view.findViewById(R.id.btnSave);
+        tvCategories = view.findViewById(R.id.tvCategories);
+        tvDescription = view.findViewById(R.id.tvDescription);
+        ivImage = view.findViewById(R.id.ivImage);
 
-        // Retrieve destination properties from Bundle
+        final AsyncHttpClient client = new AsyncHttpClient();
+
+        // Retrieve xid from Bundle
         Bundle bundle = this.getArguments();
         if (bundle != null) {
-            name = bundle.getString("name");
+            xid = bundle.getString("xid");
             categories = bundle.getString("categories");
         }
 
-        // Set TextViews to destination properties
-        // TODO Add and/or change setText methods to take different properties as needed
-        tvName.setText(name);
-        tvDescription.setText("Categories: " + categories);
+        // Add xid and apikey to URL for api request
+        URL = "https://api.opentripmap.com/0.1/en/places/xid/" + (xid + "?apikey=" + BuildConfig.OPENTRIPMAP_API_KEY);
+        Log.i(TAG, URL);
+
+        // Gets jsonObject based on xid
+        client.get(URL, new JsonHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Headers headers, JSON json) {
+                Log.d(TAG, "onSuccess");
+
+                result = json.jsonObject;
+                Log.i(TAG, "Results: " + result.toString());
+
+                // Set views to destination properties
+                try {
+                    tvName.setText(result.getString("name"));
+
+                    tvCategories.setText("Categories: " + categories);
+
+                    JSONObject jsonWikipediaExtracts = (JSONObject) result.get("wikipedia_extracts");
+                    tvDescription.setText(jsonWikipediaExtracts.getString("text"));
+
+                    JSONObject jsonPreview = (JSONObject) result.get("preview");
+                    Glide.with(getContext()).load(jsonPreview.getString("source")).into(ivImage);
+                    Log.i(TAG, "Image link: " + jsonPreview.getString("source"));
+                } catch (JSONException e) {
+                    Log.e(TAG, "Hit json exception", e);
+                }
+            }
+
+            @Override
+            public void onFailure(int statusCode, Headers headers, String response, Throwable throwable) {
+                Log.d(TAG, "onFailure, statusCode " + statusCode + ", response:  " + response);
+            }
+        });
 
 
         // TODO: This should check if the user has this location bookmarked or not and set the button image accordingly.

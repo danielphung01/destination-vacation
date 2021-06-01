@@ -43,7 +43,7 @@ public class SearchFragment extends Fragment {
 
     private static final String TAG = "SearchFragment";
 
-    // TODO Coordinates and place type are hardcoded
+    // TODO Coordinates, place type, and language are hardcoded
     public static final String URL = "https://api.opentripmap.com/0.1/en/places/bbox?lon_min=-120&lat_min=25&lon_max=0&lat_max=50&kinds=interesting_places&format=json&apikey=" + BuildConfig.OPENTRIPMAP_API_KEY;
 
     private static NestedScrollView nestedScrollView;
