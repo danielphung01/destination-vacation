@@ -11,17 +11,17 @@ import java.util.List;
 @Parcel
 public class Destination {
 
+    String xid;
     String name;
     String categories;
-    // String image;
 
     // Empty constructor needed by the Parceler library
     public Destination() {}
 
     public Destination(JSONObject jsonObject) throws JSONException {
+        xid = jsonObject.getString("xid");
         name = jsonObject.getString("name");
         categories = jsonObject.getString("kinds");
-        // image = jsonObject.getString("image");
 
 
         // Format categories string to be displayed
@@ -57,7 +57,9 @@ public class Destination {
         return destinations;
     }
 
-        public String getName() { return name; }
+    public String getXid() { return xid; }
+
+    public String getName() { return name; }
 
     public String getCategories() { return categories; }
 }
