@@ -18,12 +18,17 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.codepath.apps.destination_vacation.Bookmark;
 import com.codepath.apps.destination_vacation.BuildConfig;
 import com.codepath.apps.destination_vacation.LoginActivity;
 import com.codepath.apps.destination_vacation.R;
 import com.codepath.asynchttpclient.AsyncHttpClient;
 import com.codepath.asynchttpclient.callback.JsonHttpResponseHandler;
+import com.parse.DeleteCallback;
+import com.parse.ParseException;
+import com.parse.ParseQuery;
 import com.parse.ParseUser;
+import com.parse.SaveCallback;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -79,6 +84,8 @@ public class InfoFragment extends Fragment {
         tvDescription = view.findViewById(R.id.tvDescription);
         ivImage = view.findViewById(R.id.ivImage);
 
+        ParseUser currentUser = ParseUser.getCurrentUser();
+
         final AsyncHttpClient client = new AsyncHttpClient();
 
         // Retrieve xid from Bundle
@@ -125,8 +132,16 @@ public class InfoFragment extends Fragment {
         });
 
 
-        // TODO: This should check if the user has this location bookmarked or not and set the button image accordingly.
-        i = 0;
+        // Sets the initial bookmark button to the correct image based on whether the user already bookmarked the location
+        ParseQuery<Bookmark> query = getQuery(currentUser, xid);
+        try {
+            if (query.count() == 0) // There are no bookmarks that match the current user and current location
+                i = 0;
+            else
+                i = 1;
+        } catch (ParseException e) {
+            Log.e(TAG, "Error getting query count", e);
+        }
         btnSave.setBackgroundResource(images[i]);
 
 
@@ -136,14 +151,70 @@ public class InfoFragment extends Fragment {
             public void onClick(View v) {
                 if (i == 0) { // Location was not bookmarked
                     i = 1;
+
                     // Add bookmark
+                    createBookmark(currentUser, xid);
                     Toast.makeText(getContext(), "Added to bookmarks", Toast.LENGTH_SHORT).show();
-                } else if (i == 1) {// Location was bookmarked
+                } else if (i == 1) { // Location was bookmarked
                     i = 0;
+
                     // Remove bookmark
+                    try {
+                        removeBookmark(currentUser, xid);
+                    } catch (ParseException e) {
+                        Log.e(TAG, "Error", e);
+                    }
+
                     Toast.makeText(getContext(), "Removed from bookmarks", Toast.LENGTH_SHORT).show();
                 }
+
+                // Change bookmark icon image
                 btnSave.setBackgroundResource(images[i]);
+            }
+        });
+    }
+
+    // Gets a query of all bookmarks that match the current user and current location
+    private ParseQuery<Bookmark> getQuery(ParseUser user, String xid) {
+        ParseQuery<Bookmark> query = ParseQuery.getQuery(Bookmark.class);
+        query.include(Bookmark.KEY_USER);
+        query.whereEqualTo(Bookmark.KEY_USER, user);
+        query.whereEqualTo(Bookmark.KEY_XID, xid);
+
+        return query;
+    }
+
+    // Creates a bookmark given the current user and the location xid
+    private void createBookmark(ParseUser currentUser, String xid) {
+        Bookmark bookmark = new Bookmark();
+        bookmark.setUser(currentUser);
+        bookmark.setXid(xid);
+
+        bookmark.saveInBackground(new SaveCallback() {
+            @Override
+            public void done(ParseException e) {
+                if (e != null) {
+                    Log.e(TAG, "Error saving bookmark", e);
+                    Toast.makeText(getContext(), "Error saving bookmark", Toast.LENGTH_SHORT).show();
+                }
+                Log.i(TAG, "Bookmark saved successfully");
+
+            }
+        });
+    }
+
+    // Removes a bookmark given the current user and the location xid
+    private void removeBookmark(ParseUser currentUser, String xid) throws ParseException {
+        ParseQuery<Bookmark> query = getQuery(currentUser, xid);
+
+        query.getFirst().deleteInBackground(new DeleteCallback() {
+            @Override
+            public void done(ParseException e) {
+                if (e != null) {
+                    Log.e(TAG, "Error deleting bookmark", e);
+                    Toast.makeText(getContext(), "Error saving bookmark", Toast.LENGTH_SHORT).show();
+                }
+                Log.i(TAG, "Bookmark removed successfully");
             }
         });
     }

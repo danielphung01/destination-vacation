@@ -11,7 +11,9 @@ public class ParseApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        // TODO Register your parse models
+
+        // Register your parse models
+        ParseObject.registerSubclass(Bookmark.class);
 
         Parse.initialize(new Parse.Configuration.Builder(this)
                 .applicationId(BuildConfig.PARSE_APPLICATION_ID)
