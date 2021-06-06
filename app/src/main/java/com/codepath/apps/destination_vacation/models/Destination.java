@@ -14,6 +14,7 @@ public class Destination {
     String xid;
     String name;
     String categories;
+    boolean justName;
 
     // Empty constructor needed by the Parceler library
     public Destination() {}
@@ -22,6 +23,7 @@ public class Destination {
         xid = jsonObject.getString("xid");
         name = jsonObject.getString("name");
         categories = jsonObject.getString("kinds");
+        justName = false;
 
 
         // Format categories string to be displayed
@@ -57,9 +59,19 @@ public class Destination {
         return destinations;
     }
 
+    public void setXid(String xid) { this.xid = xid; }
+
     public String getXid() { return xid; }
+
+    public void setName(String name) { this.name = name; }
 
     public String getName() { return name; }
 
+    public void setCategories(String categories) { this.categories = categories; }
+
     public String getCategories() { return categories; }
+
+    public void setJustName(boolean justName) { this.justName = justName; }
+
+    public boolean getJustName() { return justName; }
 }

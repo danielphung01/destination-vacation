@@ -23,6 +23,7 @@
         android:layout_marginStart="0dp"
         android:layout_marginTop="10dp"
         android:layout_marginBottom="10dp"
+        android:visibility="visible"
         android:text="@string/sample_text" />
 
 </RelativeLayout>

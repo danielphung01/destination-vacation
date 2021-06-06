@@ -56,6 +56,7 @@ public class InfoFragment extends Fragment {
 
     private JSONObject result;
     private String xid = "";
+    private String name = "";
     private String categories = "Location Categories";
 
     int images[] = {R.drawable.ic_baseline_bookmark_border_24, R.drawable.ic_baseline_bookmark_24};
@@ -110,7 +111,8 @@ public class InfoFragment extends Fragment {
 
                 // Set views to destination properties
                 try {
-                    tvName.setText(result.getString("name"));
+                    name = result.getString("name");
+                    tvName.setText(name);
 
                     tvCategories.setText("Categories: " + categories);
 
@@ -153,7 +155,7 @@ public class InfoFragment extends Fragment {
                     i = 1;
 
                     // Add bookmark
-                    createBookmark(currentUser, xid);
+                    createBookmark(currentUser, xid, name, categories);
                     Toast.makeText(getContext(), "Added to bookmarks", Toast.LENGTH_SHORT).show();
                 } else if (i == 1) { // Location was bookmarked
                     i = 0;
@@ -185,10 +187,12 @@ public class InfoFragment extends Fragment {
     }
 
     // Creates a bookmark given the current user and the location xid
-    private void createBookmark(ParseUser currentUser, String xid) {
+    private void createBookmark(ParseUser currentUser, String xid, String name, String categories) {
         Bookmark bookmark = new Bookmark();
         bookmark.setUser(currentUser);
+        bookmark.setName(name);
         bookmark.setXid(xid);
+        bookmark.setCategories(categories);
 
         bookmark.saveInBackground(new SaveCallback() {
             @Override

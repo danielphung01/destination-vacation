@@ -6,6 +6,9 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.viewpager.widget.ViewPager;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -16,9 +19,20 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.codepath.apps.destination_vacation.Bookmark;
 import com.codepath.apps.destination_vacation.LoginActivity;
 import com.codepath.apps.destination_vacation.R;
+import com.codepath.apps.destination_vacation.adapters.DestinationAdapter;
+import com.codepath.apps.destination_vacation.adapters.ViewPagerAdapter;
+import com.codepath.apps.destination_vacation.models.Destination;
+import com.google.android.material.tabs.TabLayout;
+import com.parse.FindCallback;
+import com.parse.ParseException;
+import com.parse.ParseQuery;
 import com.parse.ParseUser;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -27,12 +41,16 @@ public class ProfileFragment extends Fragment {
 
     public static final String TAG = "ProfileFragment";
 
-    private TextView user_profile;
-    private ImageView profile_img;
-    private TextView history_tv;
-    private TextView bookmarks_tv;
-    private Button btnBack;
+    private TextView tvUser;
+    private ImageView ivProfile;
+    private Button btnLogout;
+    private TabLayout tabLayout;
+    private ViewPager viewPager;
+    private RecyclerView rvRecentSearches;
+    private RecyclerView rvBookmarks;
 
+    List<Destination> recentSearches;
+    List<Destination> bookmarks;
 
     public ProfileFragment() {
         // Required empty public constructor
@@ -50,10 +68,89 @@ public class ProfileFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        btnBack = view.findViewById(R.id.btnBack);
+        tvUser = view.findViewById(R.id.tvUser);
+        ivProfile = view.findViewById(R.id.ivProfile);
+        btnLogout = view.findViewById(R.id.btnLogout);
+        tabLayout = view.findViewById(R.id.tabLayout);
+        viewPager = view.findViewById(R.id.viewPager);
+        rvRecentSearches = view.findViewById(R.id.rvRecentSearches);
+        rvBookmarks = view.findViewById(R.id.rvBookmarks);
+
+        ParseUser currentUser = ParseUser.getCurrentUser();
+
+        List<RecyclerView> recyclerViews = new ArrayList<RecyclerView>();
+        recyclerViews.add(rvRecentSearches);
+        recyclerViews.add(rvBookmarks);
+
+        // Link the TabLayout to the ViewPager
+        tabLayout.setupWithViewPager(viewPager);
+
+        // Create the adapter
+        //final ViewPagerAdapter viewPagerAdapter = new ViewPagerAdapter(getContext(), recyclerViews);
+        final ViewPagerAdapter viewPagerAdapter = new ViewPagerAdapter();
+
+        // Set the adapter on the view pager
+        viewPager.setAdapter(viewPagerAdapter);
+
+        // region Set up Recent Searches recycler view
+
+        recentSearches = new ArrayList<>();
+        // Create the adapter for recents recycler view
+        final DestinationAdapter destinationAdapterRecent = new DestinationAdapter(getContext(), recentSearches);
+        // Set the adapter on the recycler view
+        rvRecentSearches.setAdapter(destinationAdapterRecent);
+        // Set a Layout Manager on the recycler view
+        LinearLayoutManager layoutManagerRecent = new LinearLayoutManager(getContext());
+        rvRecentSearches.setLayoutManager(layoutManagerRecent);
+
+        //endregion
+
+
+        // region Set up Bookmarks recycler view
+
+        bookmarks = new ArrayList<>();
+        // Create the adapter for bookmarks recycler view
+        final DestinationAdapter destinationAdapterBookmark = new DestinationAdapter(getContext(), bookmarks);
+        // Set the adapter on the recycler view
+        rvBookmarks.setAdapter(destinationAdapterBookmark);
+        // Set a Layout Manager on the recycler view
+        LinearLayoutManager layoutManagerBookmark = new LinearLayoutManager(getContext());
+        rvBookmarks.setLayoutManager(layoutManagerBookmark);
+
+        //W154418191
+        // Get a query of all of the user's bookmarks
+        ParseQuery<Bookmark> query = getQuery(currentUser);
+        query.findInBackground(new FindCallback<Bookmark>() {
+            @Override
+            public void done(List<Bookmark> bookmarksTemp, ParseException e) {
+                if (e != null) {
+                    Log.e(TAG, "Issue getting bookmarks");
+                    return;
+                }
+
+                // Add all queried bookmarks into bookmarks list as destinations for rvBookmarks
+                for (Bookmark bookmark : bookmarksTemp) {
+                    Log.i(TAG, "place:" + bookmark.getName());
+                    Destination d = new Destination();
+                    d.setName(bookmark.getName());
+                    d.setCategories(bookmark.getCategories());
+                    d.setXid(bookmark.getXid());
+                    d.setJustName(true);
+                    bookmarks.add(d);
+                }
+                rvBookmarks.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        destinationAdapterBookmark.notifyDataSetChanged();
+                    }
+                });
+            }
+        });
+
+        //endregion
 
         // Listener for logout button
-        btnBack.setOnClickListener(new View.OnClickListener() {
+        btnLogout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 // log the user out
@@ -63,9 +160,20 @@ public class ProfileFragment extends Fragment {
                 goLoginActivity();
             }
         });
+
+
     }
 
-    // temporary method
+    // Gets a query of all bookmarks that match the current user
+    private ParseQuery<Bookmark> getQuery(ParseUser user) {
+        ParseQuery<Bookmark> query = ParseQuery.getQuery(Bookmark.class);
+        query.include(Bookmark.KEY_USER);
+        query.whereEqualTo(Bookmark.KEY_USER, user);
+
+        return query;
+    }
+
+    // return to log in page
     private void goLoginActivity() {
         Intent i = new Intent(getActivity(), LoginActivity.class);
         startActivity(i);

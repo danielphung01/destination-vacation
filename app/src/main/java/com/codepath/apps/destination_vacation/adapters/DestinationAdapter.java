@@ -55,6 +55,12 @@ public class DestinationAdapter extends RecyclerView.Adapter<DestinationAdapter.
         return destinations.size();
     }
 
+    // Clean all elements of the recycler
+    public void clear() {
+        destinations.clear();
+        notifyDataSetChanged();
+    }
+
     public class ViewHolder extends RecyclerView.ViewHolder {
 
         String xid;
@@ -77,8 +83,16 @@ public class DestinationAdapter extends RecyclerView.Adapter<DestinationAdapter.
             name = destination.getName();
             categories = destination.getCategories();
 
-            tvDestinationName.setText("Name: " + name);
-            tvDestinationCategories.setText("Categories: " + categories);
+            // If the destination objects was meant to just show the name, remove the tvDestinationCategories textView
+            if (!destination.getJustName()) {
+                tvDestinationName.setText("Name: " + name);
+                tvDestinationCategories.setText("Categories: " + categories);
+            }
+            else {
+                tvDestinationName.setText(name);
+                tvDestinationCategories.setVisibility(View.GONE);
+            }
+
 
             // 1. Register click listener on whole row
             container.setOnClickListener(v -> {
