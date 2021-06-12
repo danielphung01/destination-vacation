@@ -21,6 +21,8 @@ import java.util.List;
 
 public class DestinationAdapter extends RecyclerView.Adapter<DestinationAdapter.ViewHolder> {
 
+    public static final String TAG = "DestinationAdapter";
+
     Context context;
     List<Destination> destinations;
 
@@ -33,7 +35,7 @@ public class DestinationAdapter extends RecyclerView.Adapter<DestinationAdapter.
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        Log.d("DestinationAdapter", "onCreateViewHolder");
+        Log.d(TAG, "onCreateViewHolder");
         // TODO make item_destination's layout look better
         View destinationView = LayoutInflater.from(context).inflate(R.layout.item_destination, parent, false);
         return new ViewHolder(destinationView);
@@ -42,7 +44,7 @@ public class DestinationAdapter extends RecyclerView.Adapter<DestinationAdapter.
     // Involves populating data into the item through holder
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        Log.d("DestinationAdapter", "onBindViewHolder" + position);
+        Log.d(TAG, "onBindViewHolder" + position);
         // Get the destination at the passed in position
         Destination destination = destinations.get(position);
         // Bind the movie into the ViewHolder
@@ -96,7 +98,7 @@ public class DestinationAdapter extends RecyclerView.Adapter<DestinationAdapter.
 
             // 1. Register click listener on whole row
             container.setOnClickListener(v -> {
-                // 2. Put destination's properties into Bundle
+                // 2. Put destination's properties into bundle
                 Bundle bundle = new Bundle();
                 bundle.putString("xid", xid);
                 bundle.putString("categories", categories);

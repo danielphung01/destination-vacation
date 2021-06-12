@@ -1,7 +1,6 @@
-package com.codepath.apps.destination_vacation;
+package com.codepath.apps.destination_vacation.activities;
 
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -13,14 +12,10 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.codepath.asynchttpclient.AsyncHttpClient;
-import com.codepath.asynchttpclient.callback.JsonHttpResponseHandler;
-import com.codepath.oauth.OAuthLoginActionBarActivity;
+import com.codepath.apps.destination_vacation.R;
 import com.parse.LogInCallback;
 import com.parse.ParseException;
 import com.parse.ParseUser;
-
-import okhttp3.Headers;
 
 public class LoginActivity extends AppCompatActivity {
 

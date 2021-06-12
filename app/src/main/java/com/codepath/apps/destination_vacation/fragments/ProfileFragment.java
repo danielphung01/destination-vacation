@@ -20,7 +20,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.codepath.apps.destination_vacation.Bookmark;
-import com.codepath.apps.destination_vacation.LoginActivity;
+import com.codepath.apps.destination_vacation.activities.LoginActivity;
 import com.codepath.apps.destination_vacation.R;
 import com.codepath.apps.destination_vacation.adapters.DestinationAdapter;
 import com.codepath.apps.destination_vacation.adapters.ViewPagerAdapter;
@@ -116,6 +116,8 @@ public class ProfileFragment extends Fragment {
         // Set a Layout Manager on the recycler view
         LinearLayoutManager layoutManagerBookmark = new LinearLayoutManager(getContext());
         rvBookmarks.setLayoutManager(layoutManagerBookmark);
+
+        tvUser.setText(currentUser.getUsername());
 
         //W154418191
         // Get a query of all of the user's bookmarks

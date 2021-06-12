@@ -1,22 +1,14 @@
 package com.codepath.apps.destination_vacation.adapters;
 
-import android.content.Context;
-import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.PagerAdapter;
 
 import com.codepath.apps.destination_vacation.R;
-import com.codepath.apps.destination_vacation.models.Destination;
 
 import org.jetbrains.annotations.NotNull;
-
-import java.util.List;
 
 public class ViewPagerAdapter extends PagerAdapter {
 

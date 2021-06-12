@@ -1,12 +1,10 @@
 package com.codepath.apps.destination_vacation.fragments;
 
-import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -20,10 +18,10 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.codepath.apps.destination_vacation.Bookmark;
 import com.codepath.apps.destination_vacation.BuildConfig;
-import com.codepath.apps.destination_vacation.LoginActivity;
 import com.codepath.apps.destination_vacation.R;
 import com.codepath.asynchttpclient.AsyncHttpClient;
 import com.codepath.asynchttpclient.callback.JsonHttpResponseHandler;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.parse.DeleteCallback;
 import com.parse.ParseException;
 import com.parse.ParseQuery;
@@ -34,6 +32,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.lang.reflect.Method;
+import java.util.Objects;
 
 import okhttp3.Headers;
 
@@ -43,6 +42,8 @@ import okhttp3.Headers;
 public class InfoFragment extends Fragment {
 
     private static final String TAG = "InfoFragment";
+
+    private BottomNavigationView bottomNavigationView;
 
     // Language is hardcoded as en (english)
     //public static final String URL = "http://api.opentripmap.com/0.1/en/places/xid/_________?apikey=" + BuildConfig.OPENTRIPMAP_API_KEY;
@@ -78,6 +79,10 @@ public class InfoFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        // Hide bottom navigation when the info fragment is created
+        bottomNavigationView = requireActivity().findViewById(R.id.bottomNavigationView);
+        bottomNavigationView.setVisibility(View.GONE);
 
         tvName = view.findViewById(R.id.tvName);
         btnSave = view.findViewById(R.id.btnSave);
@@ -174,6 +179,13 @@ public class InfoFragment extends Fragment {
                 btnSave.setBackgroundResource(images[i]);
             }
         });
+    }
+
+    // Show bottom navigation when the info fragment is stopped
+    @Override
+    public void onStop() {
+        super.onStop();
+        bottomNavigationView.setVisibility(View.VISIBLE);
     }
 
     // Gets a query of all bookmarks that match the current user and current location

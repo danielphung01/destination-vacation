@@ -12,5 +12,8 @@
     <string name="errorNoPassword">Enter a password.</string>
     <string name="errorNoUsername">Enter a username.</string>
     <string name="sample_text">text_here</string>
+    <string name="search">Search</string>
+    <string name="info">Info</string>
+    <string name="profile">Profile</string>
 
 </resources>

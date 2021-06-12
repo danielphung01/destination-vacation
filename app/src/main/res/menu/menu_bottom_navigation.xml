@@ -5,16 +5,11 @@
     <item
         android:id="@+id/action_search"
         android:icon="@android:drawable/ic_menu_search"
-        android:title="Search"
-        app:showAsAction="always" />
-    <item
-        android:id="@+id/action_info"
-        android:icon="@android:drawable/ic_dialog_info"
-        android:title="Info"
+        android:title="@string/search"
         app:showAsAction="always" />
     <item
         android:id="@+id/action_profile"
         android:icon="@drawable/ic_baseline_person_24"
-        android:title="Profile"
-        app:showAsAction="always" />
+        android:title="@string/profile"
+        app:showAsAction="ifRoom" />
 </menu>
