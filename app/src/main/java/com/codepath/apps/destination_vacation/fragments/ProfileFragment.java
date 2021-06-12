@@ -8,6 +8,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import androidx.viewpager.widget.ViewPager;
 
 import android.util.Log;
@@ -48,6 +49,7 @@ public class ProfileFragment extends Fragment {
     private ViewPager viewPager;
     private RecyclerView rvRecentSearches;
     private RecyclerView rvBookmarks;
+    private SwipeRefreshLayout swipeContainer;
 
     List<Destination> recentSearches;
     List<Destination> bookmarks;
@@ -75,12 +77,19 @@ public class ProfileFragment extends Fragment {
         viewPager = view.findViewById(R.id.viewPager);
         rvRecentSearches = view.findViewById(R.id.rvRecentSearches);
         rvBookmarks = view.findViewById(R.id.rvBookmarks);
+        swipeContainer = view.findViewById(R.id.swipeContainer);
 
         ParseUser currentUser = ParseUser.getCurrentUser();
 
         List<RecyclerView> recyclerViews = new ArrayList<RecyclerView>();
         recyclerViews.add(rvRecentSearches);
         recyclerViews.add(rvBookmarks);
+
+        // Configure the refreshing colors
+        swipeContainer.setColorSchemeResources(android.R.color.holo_blue_bright,
+                android.R.color.holo_green_light,
+                android.R.color.holo_orange_light,
+                android.R.color.holo_red_light);
 
         // Link the TabLayout to the ViewPager
         tabLayout.setupWithViewPager(viewPager);
@@ -92,64 +101,21 @@ public class ProfileFragment extends Fragment {
         // Set the adapter on the view pager
         viewPager.setAdapter(viewPagerAdapter);
 
-        // region Set up Recent Searches recycler view
+        // Load recent searches recycler view
+        loadRecents(currentUser);
 
-        recentSearches = new ArrayList<>();
-        // Create the adapter for recents recycler view
-        final DestinationAdapter destinationAdapterRecent = new DestinationAdapter(getContext(), recentSearches);
-        // Set the adapter on the recycler view
-        rvRecentSearches.setAdapter(destinationAdapterRecent);
-        // Set a Layout Manager on the recycler view
-        LinearLayoutManager layoutManagerRecent = new LinearLayoutManager(getContext());
-        rvRecentSearches.setLayoutManager(layoutManagerRecent);
-
-        //endregion
+        // Load bookmarks recycler view
+        loadBookmarks(currentUser);
 
 
-        // region Set up Bookmarks recycler view
-
-        bookmarks = new ArrayList<>();
-        // Create the adapter for bookmarks recycler view
-        final DestinationAdapter destinationAdapterBookmark = new DestinationAdapter(getContext(), bookmarks);
-        // Set the adapter on the recycler view
-        rvBookmarks.setAdapter(destinationAdapterBookmark);
-        // Set a Layout Manager on the recycler view
-        LinearLayoutManager layoutManagerBookmark = new LinearLayoutManager(getContext());
-        rvBookmarks.setLayoutManager(layoutManagerBookmark);
-
-        tvUser.setText(currentUser.getUsername());
-
-        //W154418191
-        // Get a query of all of the user's bookmarks
-        ParseQuery<Bookmark> query = getQuery(currentUser);
-        query.findInBackground(new FindCallback<Bookmark>() {
+        swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
-            public void done(List<Bookmark> bookmarksTemp, ParseException e) {
-                if (e != null) {
-                    Log.e(TAG, "Issue getting bookmarks");
-                    return;
-                }
-
-                // Add all queried bookmarks into bookmarks list as destinations for rvBookmarks
-                for (Bookmark bookmark : bookmarksTemp) {
-                    Log.i(TAG, "place:" + bookmark.getName());
-                    Destination d = new Destination();
-                    d.setName(bookmark.getName());
-                    d.setCategories(bookmark.getCategories());
-                    d.setXid(bookmark.getXid());
-                    d.setJustName(true);
-                    bookmarks.add(d);
-                }
-                rvBookmarks.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        destinationAdapterBookmark.notifyDataSetChanged();
-                    }
-                });
+            public void onRefresh() {
+                // Code to refresh the list here.
+                Log.i(TAG, "refresh bookmarks rv");
+                loadBookmarks(currentUser);
             }
         });
-
-        //endregion
 
         // Listener for logout button
         btnLogout.setOnClickListener(new View.OnClickListener() {
@@ -186,5 +152,62 @@ public class ProfileFragment extends Fragment {
     // If title in toolbar is clicked
     public static void onTitleClicked() {
         Log.d(TAG, "Title was clicked");
+    }
+
+    // Load the recent searches recycler view
+    // TODO: not implemented
+    private void loadRecents(ParseUser currentUser) {
+        recentSearches = new ArrayList<>();
+        // Create the adapter for recents recycler view
+        final DestinationAdapter destinationAdapterRecent = new DestinationAdapter(getContext(), recentSearches);
+        // Set the adapter on the recycler view
+        rvRecentSearches.setAdapter(destinationAdapterRecent);
+        // Set a Layout Manager on the recycler view
+        LinearLayoutManager layoutManagerRecent = new LinearLayoutManager(getContext());
+        rvRecentSearches.setLayoutManager(layoutManagerRecent);
+    }
+
+    // Load the bookmarks recycler view
+    private void loadBookmarks(ParseUser currentUser) {
+        bookmarks = new ArrayList<>();
+        // Create the adapter for bookmarks recycler view
+        final DestinationAdapter destinationAdapterBookmark = new DestinationAdapter(getContext(), bookmarks);
+        // Set the adapter on the recycler view
+        rvBookmarks.setAdapter(destinationAdapterBookmark);
+        // Set a Layout Manager on the recycler view
+        LinearLayoutManager layoutManagerBookmark = new LinearLayoutManager(getContext());
+        rvBookmarks.setLayoutManager(layoutManagerBookmark);
+
+        tvUser.setText(currentUser.getUsername());
+
+        // Get a query of all of the user's bookmarks
+        ParseQuery<Bookmark> query = getQuery(currentUser);
+        query.findInBackground(new FindCallback<Bookmark>() {
+            @Override
+            public void done(List<Bookmark> bookmarksTemp, ParseException e) {
+                if (e != null) {
+                    Log.e(TAG, "Issue getting bookmarks");
+                    return;
+                }
+
+                // Add all queried bookmarks into bookmarks list as destinations for rvBookmarks
+                for (Bookmark bookmark : bookmarksTemp) {
+                    Log.i(TAG, "place:" + bookmark.getName());
+                    Destination d = new Destination();
+                    d.setName(bookmark.getName());
+                    d.setCategories(bookmark.getCategories());
+                    d.setXid(bookmark.getXid());
+                    d.setJustName(true);
+                    bookmarks.add(d);
+                }
+                rvBookmarks.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        destinationAdapterBookmark.notifyDataSetChanged();
+                    }
+                });
+                swipeContainer.setRefreshing(false);
+            }
+        });
     }
 }
