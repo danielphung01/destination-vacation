@@ -73,10 +73,17 @@
             android:layout_height="match_parent"
             android:orientation="vertical" >
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rvRecentSearches"
+            <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+                xmlns:android="http://schemas.android.com/apk/res/android"
+                android:id="@+id/swipeContainerRecents"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="match_parent">
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rvRecentSearches"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+            </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
             <TextView
                 android:id="@+id/sample"
@@ -97,7 +104,7 @@
 
             <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
                 xmlns:android="http://schemas.android.com/apk/res/android"
-                android:id="@+id/swipeContainer"
+                android:id="@+id/swipeContainerBookmarks"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 

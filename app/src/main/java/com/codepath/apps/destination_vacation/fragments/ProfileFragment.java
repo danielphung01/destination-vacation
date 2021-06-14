@@ -49,7 +49,8 @@ public class ProfileFragment extends Fragment {
     private ViewPager viewPager;
     private RecyclerView rvRecentSearches;
     private RecyclerView rvBookmarks;
-    private SwipeRefreshLayout swipeContainer;
+    private SwipeRefreshLayout swipeContainerRecents;
+    private SwipeRefreshLayout swipeContainerBookmarks;
 
     List<Destination> recentSearches;
     List<Destination> bookmarks;
@@ -77,7 +78,8 @@ public class ProfileFragment extends Fragment {
         viewPager = view.findViewById(R.id.viewPager);
         rvRecentSearches = view.findViewById(R.id.rvRecentSearches);
         rvBookmarks = view.findViewById(R.id.rvBookmarks);
-        swipeContainer = view.findViewById(R.id.swipeContainer);
+        swipeContainerRecents = view.findViewById(R.id.swipeContainerRecents);
+        swipeContainerBookmarks = view.findViewById(R.id.swipeContainerBookmarks);
 
         ParseUser currentUser = ParseUser.getCurrentUser();
 
@@ -85,11 +87,12 @@ public class ProfileFragment extends Fragment {
         recyclerViews.add(rvRecentSearches);
         recyclerViews.add(rvBookmarks);
 
+        // Show username at top
+        tvUser.setText(currentUser.getUsername());
+
         // Configure the refreshing colors
-        swipeContainer.setColorSchemeResources(android.R.color.holo_blue_bright,
-                android.R.color.holo_green_light,
-                android.R.color.holo_orange_light,
-                android.R.color.holo_red_light);
+        swipeContainerRecents.setColorSchemeResources(android.R.color.holo_blue_bright, android.R.color.holo_green_light, android.R.color.holo_orange_light, android.R.color.holo_red_light);
+        swipeContainerBookmarks.setColorSchemeResources(android.R.color.holo_blue_bright, android.R.color.holo_green_light, android.R.color.holo_orange_light, android.R.color.holo_red_light);
 
         // Link the TabLayout to the ViewPager
         tabLayout.setupWithViewPager(viewPager);
@@ -107,8 +110,18 @@ public class ProfileFragment extends Fragment {
         // Load bookmarks recycler view
         loadBookmarks(currentUser);
 
+        // Listener for recent searches rv refresher
+        swipeContainerRecents.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                // Code to refresh the list here.
+                Log.i(TAG, "refresh recent searches rv");
+                loadRecents(currentUser);
+            }
+        });
 
-        swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+        // Listener for bookmarks rv refresher
+        swipeContainerBookmarks.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
                 // Code to refresh the list here.
@@ -165,6 +178,9 @@ public class ProfileFragment extends Fragment {
         // Set a Layout Manager on the recycler view
         LinearLayoutManager layoutManagerRecent = new LinearLayoutManager(getContext());
         rvRecentSearches.setLayoutManager(layoutManagerRecent);
+
+
+        swipeContainerRecents.setRefreshing(false);
     }
 
     // Load the bookmarks recycler view
@@ -177,8 +193,6 @@ public class ProfileFragment extends Fragment {
         // Set a Layout Manager on the recycler view
         LinearLayoutManager layoutManagerBookmark = new LinearLayoutManager(getContext());
         rvBookmarks.setLayoutManager(layoutManagerBookmark);
-
-        tvUser.setText(currentUser.getUsername());
 
         // Get a query of all of the user's bookmarks
         ParseQuery<Bookmark> query = getQuery(currentUser);
@@ -206,8 +220,9 @@ public class ProfileFragment extends Fragment {
                         destinationAdapterBookmark.notifyDataSetChanged();
                     }
                 });
-                swipeContainer.setRefreshing(false);
+
             }
         });
+        swipeContainerBookmarks.setRefreshing(false);
     }
 }
