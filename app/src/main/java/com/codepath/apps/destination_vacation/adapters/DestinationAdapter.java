@@ -100,6 +100,7 @@ public class DestinationAdapter extends RecyclerView.Adapter<DestinationAdapter.
             container.setOnClickListener(v -> {
                 // 2. Put destination's properties into bundle
                 Bundle bundle = new Bundle();
+                bundle.putString("name", name);
                 bundle.putString("xid", xid);
                 bundle.putString("categories", categories);
 

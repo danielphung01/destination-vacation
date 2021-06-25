@@ -21,6 +21,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.codepath.apps.destination_vacation.Bookmark;
+import com.codepath.apps.destination_vacation.Recent;
 import com.codepath.apps.destination_vacation.activities.LoginActivity;
 import com.codepath.apps.destination_vacation.R;
 import com.codepath.apps.destination_vacation.adapters.DestinationAdapter;
@@ -146,10 +147,19 @@ public class ProfileFragment extends Fragment {
     }
 
     // Gets a query of all bookmarks that match the current user
-    private ParseQuery<Bookmark> getQuery(ParseUser user) {
+    private ParseQuery<Bookmark> getQueryB(ParseUser user) {
         ParseQuery<Bookmark> query = ParseQuery.getQuery(Bookmark.class);
         query.include(Bookmark.KEY_USER);
         query.whereEqualTo(Bookmark.KEY_USER, user);
+
+        return query;
+    }
+
+    // Gets a query of all recent searches that match the current user
+    private ParseQuery<Recent> getQueryR(ParseUser user) {
+        ParseQuery<Recent> query = ParseQuery.getQuery(Recent.class);
+        query.include(Recent.KEY_USER);
+        query.whereEqualTo(Recent.KEY_USER, user);
 
         return query;
     }
@@ -179,6 +189,35 @@ public class ProfileFragment extends Fragment {
         LinearLayoutManager layoutManagerRecent = new LinearLayoutManager(getContext());
         rvRecentSearches.setLayoutManager(layoutManagerRecent);
 
+        // Get a query of all of the user's bookmarks
+        ParseQuery<Recent> query = getQueryR(currentUser);
+        query.findInBackground(new FindCallback<Recent>() {
+            @Override
+            public void done(List<Recent> recentsTemp, ParseException e) {
+                if (e != null) {
+                    Log.e(TAG, "Issue getting recents");
+                    return;
+                }
+
+                // Add all queried bookmarks into bookmarks list as destinations for rvBookmarks
+                for (Recent recent : recentsTemp) {
+                    // Log.i(TAG, "Recent location: " + recent.getName());
+                    Destination d = new Destination();
+                    d.setName(recent.getName());
+                    d.setCategories(recent.getCategories());
+                    d.setXid(recent.getXid());
+                    d.setJustName(true);
+                    recentSearches.add(d);
+                }
+                rvRecentSearches.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        destinationAdapterRecent.notifyDataSetChanged();
+                    }
+                });
+
+            }
+        });
 
         swipeContainerRecents.setRefreshing(false);
     }
@@ -195,7 +234,7 @@ public class ProfileFragment extends Fragment {
         rvBookmarks.setLayoutManager(layoutManagerBookmark);
 
         // Get a query of all of the user's bookmarks
-        ParseQuery<Bookmark> query = getQuery(currentUser);
+        ParseQuery<Bookmark> query = getQueryB(currentUser);
         query.findInBackground(new FindCallback<Bookmark>() {
             @Override
             public void done(List<Bookmark> bookmarksTemp, ParseException e) {
@@ -206,7 +245,7 @@ public class ProfileFragment extends Fragment {
 
                 // Add all queried bookmarks into bookmarks list as destinations for rvBookmarks
                 for (Bookmark bookmark : bookmarksTemp) {
-                    Log.i(TAG, "place:" + bookmark.getName());
+                    // Log.i(TAG, "Bookmarked location:" + bookmark.getName());
                     Destination d = new Destination();
                     d.setName(bookmark.getName());
                     d.setCategories(bookmark.getCategories());
@@ -223,6 +262,7 @@ public class ProfileFragment extends Fragment {
 
             }
         });
+
         swipeContainerBookmarks.setRefreshing(false);
     }
 }

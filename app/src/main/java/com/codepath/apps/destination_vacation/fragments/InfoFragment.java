@@ -19,6 +19,7 @@ import com.bumptech.glide.Glide;
 import com.codepath.apps.destination_vacation.Bookmark;
 import com.codepath.apps.destination_vacation.BuildConfig;
 import com.codepath.apps.destination_vacation.R;
+import com.codepath.apps.destination_vacation.Recent;
 import com.codepath.asynchttpclient.AsyncHttpClient;
 import com.codepath.asynchttpclient.callback.JsonHttpResponseHandler;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -97,6 +98,7 @@ public class InfoFragment extends Fragment {
         // Retrieve xid from Bundle
         Bundle bundle = this.getArguments();
         if (bundle != null) {
+            name = bundle.getString("name");
             xid = bundle.getString("xid");
             categories = bundle.getString("categories");
         }
@@ -116,7 +118,6 @@ public class InfoFragment extends Fragment {
 
                 // Set views to destination properties
                 try {
-                    name = result.getString("name");
                     tvName.setText(name);
 
                     tvCategories.setText("Categories: " + categories);
@@ -151,6 +152,8 @@ public class InfoFragment extends Fragment {
         }
         btnSave.setBackgroundResource(images[i]);
 
+        // Add the location as a recently searched location
+        createRecent(currentUser, xid, name, categories);
 
         // Listener for bookmark
         btnSave.setOnClickListener(new View.OnClickListener() {
@@ -198,7 +201,7 @@ public class InfoFragment extends Fragment {
         return query;
     }
 
-    // Creates a bookmark given the current user and the location xid
+    // Creates a bookmark given the current user and location xid, name, and categories
     private void createBookmark(ParseUser currentUser, String xid, String name, String categories) {
         Bookmark bookmark = new Bookmark();
         bookmark.setUser(currentUser);
@@ -212,9 +215,9 @@ public class InfoFragment extends Fragment {
                 if (e != null) {
                     Log.e(TAG, "Error saving bookmark", e);
                     Toast.makeText(getContext(), "Error saving bookmark", Toast.LENGTH_SHORT).show();
+                } else {
+                    Log.i(TAG, "Bookmark saved successfully");
                 }
-                Log.i(TAG, "Bookmark saved successfully");
-
             }
         });
     }
@@ -229,8 +232,31 @@ public class InfoFragment extends Fragment {
                 if (e != null) {
                     Log.e(TAG, "Error deleting bookmark", e);
                     Toast.makeText(getContext(), "Error saving bookmark", Toast.LENGTH_SHORT).show();
+                } else {
+                    Log.i(TAG, "Bookmark removed successfully");
                 }
-                Log.i(TAG, "Bookmark removed successfully");
+            }
+        });
+    }
+
+    // Creates a recent (recently visited location) given the current user and location xid, name, and categories
+    private void createRecent(ParseUser currentUser, String xid, String name, String categories) {
+        Recent recent = new Recent();
+        recent.setUser(currentUser);
+        recent.setName(name);
+        recent.setXid(xid);
+        recent.setCategories(categories);
+
+        recent.saveInBackground(new SaveCallback() {
+            @Override
+            public void done(ParseException e) {
+                if (e != null) {
+                    Log.e(TAG, "Error saving recent", e);
+                    Log.i(TAG, currentUser + " " + name + " " + xid + " " + categories);
+                } else {
+                    Log.i(TAG, "Recent saved successfully");
+                }
+
             }
         });
     }
