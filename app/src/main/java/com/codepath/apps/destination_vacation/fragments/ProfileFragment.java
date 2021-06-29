@@ -34,6 +34,7 @@ import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -178,7 +179,6 @@ public class ProfileFragment extends Fragment {
     }
 
     // Load the recent searches recycler view
-    // TODO: not implemented
     private void loadRecents(ParseUser currentUser) {
         recentSearches = new ArrayList<>();
         // Create the adapter for recents recycler view
@@ -209,6 +209,9 @@ public class ProfileFragment extends Fragment {
                     d.setJustName(true);
                     recentSearches.add(d);
                 }
+                // Reverse the order of the recentSearches array so that the most recent locations show up at the top
+                Collections.reverse(recentSearches);
+
                 rvRecentSearches.post(new Runnable() {
                     @Override
                     public void run() {
